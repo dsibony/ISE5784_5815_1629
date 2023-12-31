@@ -26,7 +26,7 @@ public class Vector extends Point {
 	 * Constructor to initialize Vector based object with its Double3 coordinate
 	 * value
 	 * 
-	 * @param xyz the only Double3 value needed for the Vector
+	 * @param xyz - the only Double3 value needed for the Vector
 	 */
 	// supposed to be package permission (=no permission)
 	public Vector(Double3 xyz) {
@@ -44,7 +44,7 @@ public class Vector extends Point {
 
 	@Override
 	public String toString() {
-		return "v" + super.toString();
+		return "Vector:" + super.toString();
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class Vector extends Point {
 	/**
 	 * Cross product between two vectors
 	 * 
-	 * @param v vector, the second vector in the cross product
+	 * @param v - vector, the second vector in the cross product
 	 * @return the vector that is the result of the cross product between those two
 	 *         vectors
 	 */

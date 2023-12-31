@@ -13,14 +13,19 @@ public class Point {
 	/**
 	 * Constructor to initialize Point based object with its three number values
 	 * 
-	 * @param d1 first number value
-	 * @param d2 second number value
-	 * @param d3 third number value
+	 * @param d1 - first number value
+	 * @param d2 - second number value
+	 * @param d3 - third number value
 	 */
 	public Point(double d1, double d2, double d3) {
 		coordinates = new Double3(d1, d2, d3);
 	}
 
+	/**
+	 * Constructor to initialize Point based object with its Double3 coordinate
+	 * 
+	 * @param xyz - the only Double3 value needed for the Point
+	 */
 	Point(Double3 xyz) {
 		coordinates = xyz;
 	}
@@ -35,7 +40,7 @@ public class Point {
 
 	@Override
 	public String toString() {
-		return "" + coordinates;
+		return "Point:" + coordinates;
 	}
 
 	/**
