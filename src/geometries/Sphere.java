@@ -10,6 +10,7 @@ import primitives.Vector;
  * This class will be used as a Sphere, a geometric object
  */
 public class Sphere extends RadialGeometry {
+	@SuppressWarnings("unused")
 	private final Point center;
 
 	/**

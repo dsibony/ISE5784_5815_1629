@@ -3,14 +3,12 @@
  */
 package primitives;
 
-import static primitives.Util.isZero;
-
 /**
  * This class will serve all classes who want to use points 
  */
 public class Point {
 	public static final Point ZERO = new Point(0, 0, 0);
-	protected final Double3 coordinate;
+	protected final Double3 coordinates;
 
 	/**
 	 * Constructor to initialize Point based object with its three number values
@@ -20,11 +18,11 @@ public class Point {
 	 * @param d3 third number value
 	 */
 	public Point(double d1, double d2, double d3) {
-		coordinate = new Double3(d1, d2, d3);
+		coordinates = new Double3(d1, d2, d3);
 	}
-	//public?
+
 	Point(Double3 xyz) {
-		coordinate = xyz;
+		coordinates = xyz;
 	}
 
 	@Override
@@ -32,17 +30,12 @@ public class Point {
 		if (this == obj) {
 			return true;
 		}
-		return (obj instanceof Point other)
-	            && isZero(coordinate.d1 - other.coordinate.d1)
-	            && isZero(coordinate.d2 - other.coordinate.d2)
-	            && isZero(coordinate.d3 - other.coordinate.d3);
-		//return super.equals(obj);
+		return (obj instanceof Point other) && coordinates.equals(other.coordinates);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString();
-		// return "(" + coordinate.d1 + "," + coordinate.d2 + "," + coordinate.d3 + ")";
+		return "" + coordinates;
 	}
 
 	/**
@@ -52,7 +45,7 @@ public class Point {
 	 * @return the vector from p2 to 
 	 */
 	public Vector subtract(Point p2) {
-		return new Vector(coordinate.subtract(p2.coordinate));
+		return new Vector(coordinates.subtract(p2.coordinates));
 	}
 
 	/**
@@ -62,7 +55,7 @@ public class Point {
 	 * @return the point which is the result of the addition of the vector to the point
 	 */
 	public Point add(Vector v) {
-		return new Point(coordinate.add(v.coordinate));
+		return new Point(coordinates.add(v.coordinates));
 	}
 
 	/**
@@ -72,9 +65,9 @@ public class Point {
 	 * @return the absolute value of the distance squared
 	 */
 	public double distanceSquared(Point p2) {
-		double xDistance = coordinate.d1 - p2.coordinate.d1;
-		double yDistance = coordinate.d2 - p2.coordinate.d2;
-		double zDistance = coordinate.d3 - p2.coordinate.d3;
+		double xDistance = coordinates.d1 - p2.coordinates.d1;
+		double yDistance = coordinates.d2 - p2.coordinates.d2;
+		double zDistance = coordinates.d3 - p2.coordinates.d3;
 		return Math.abs((xDistance * xDistance) + (yDistance * yDistance) + (zDistance * zDistance));
 	}
 

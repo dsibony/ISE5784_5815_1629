@@ -8,6 +8,7 @@ import primitives.Vector;
  * This class will be used as a cylinder, a geometric object
  */
 public class Cylinder extends Tube {
+	@SuppressWarnings("unused")
 	private final double height;
 
 	/**

@@ -28,12 +28,12 @@ public class Ray {
 			return true;
 		}
 		return (obj instanceof Ray other)
-	            && isZero(head.coordinate.d1 - other.head.coordinate.d1)
-	            && isZero(head.coordinate.d2 - other.head.coordinate.d2)
-	            && isZero(head.coordinate.d3 - other.head.coordinate.d3)
-				&& isZero(direction.coordinate.d1 - other.direction.coordinate.d1)
-				&& isZero(direction.coordinate.d2 - other.direction.coordinate.d2)
-				&& isZero(direction.coordinate.d3 - other.direction.coordinate.d3);
+	            && isZero(head.coordinates.d1 - other.head.coordinates.d1)
+	            && isZero(head.coordinates.d2 - other.head.coordinates.d2)
+	            && isZero(head.coordinates.d3 - other.head.coordinates.d3)
+				&& isZero(direction.coordinates.d1 - other.direction.coordinates.d1)
+				&& isZero(direction.coordinates.d2 - other.direction.coordinates.d2)
+				&& isZero(direction.coordinates.d3 - other.direction.coordinates.d3);
 	}
 
 	@Override

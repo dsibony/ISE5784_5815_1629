@@ -10,6 +10,7 @@ import primitives.Vector;
  * This class will be used as a plane and will have more uses as other classes extend it
  */
 public class Plane implements Geometry {
+	@SuppressWarnings("unused")
 	private final Point q;
 	private final Vector normal;
 
@@ -21,7 +22,7 @@ public class Plane implements Geometry {
 	 * @param p3 third point value (used for getting the normal vector too)
 	 */
 	public Plane(Point p1, Point p2, Point p3) {
-		normal = getNormal(p1);
+		normal = null;
 		q = p3;
 	}
 
@@ -38,8 +39,7 @@ public class Plane implements Geometry {
 
 	@Override
 	public Vector getNormal(Point p) {
-		// TODO
-		return null;
+		return normal;
 	}
 
 	/**
