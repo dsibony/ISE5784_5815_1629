@@ -1,19 +1,19 @@
 /**
  * 
  */
-package unittests;
+package unittests.geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for geometries.Tube class
+ * Unit tests for geometries.Cylinder class
  */
-class TubeTests {
+class CylinderTests {
 
 	/**
-	 * Test method for {@link geometries.Tube#getNormal(primitives.Point)}.
+	 * Test method for {@link geometries.Cylinder#getNormal(primitives.Point)}.
 	 */
 	@Test
 	void testGetNormal() {
