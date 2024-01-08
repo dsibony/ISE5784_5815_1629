@@ -56,14 +56,6 @@ class VectorTests {
 	}
 
 	/**
-	 * Test method for {@link primitives.Vector#scale(double)}.
-	 */
-	@Test
-	void testScale() {
-		fail("Not yet implemented");
-	}
-
-	/**
 	 * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}.
 	 */
 	@Test
@@ -77,27 +69,25 @@ class VectorTests {
 	}
 
 	/**
-	 * Test method for {@link primitives.Vector#crossProduct(primitives.Vector)}.
+	 * Test method for
+	 * {@link primitives.Vector#crossProduct(primitives.Vector)}.
 	 */
-	@Test
-	void testCrossProduct() {
-		// ============ Equivalence Partitions Tests ==============
-		try {
-            // TC01: Test that crossProduct() for parallel vectors throws an exception
-            v1.crossProduct(v2);
-            fail("ERROR: crossProduct() for parallel vectors does not throw an exception");
-        } catch (Exception e) {
-            // Expected exception
-        }
+	 @Test
+	 void testCrossProduct() {
+	 // ============ Equivalence Partitions Tests ==============
+	 Vector vr = v1.crossProduct(v2);
+	 // TC01: Test that length of cross-product is proper (orthogonal vectors taken
+	 // for simplicity)
+	 assertEquals(v1.length() * v3.length(), vr.length(), DELTA, "crossProduct() wrong result length");
+	 // TC02: Test cross-product result orthogonality to its operands
+	 assertEquals(0, vr.dotProduct(v1), "crossProduct() result is not orthogonal to 1st operand");
+	 assertEquals(0, vr.dotProduct(v3), "crossProduct() result is not orthogonal to 2nd operand");
+	 // =============== Boundary Values Tests ==================
+	 // TC11: test zero vector from cross-product of parallel vectors
+	 assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v2), //
+	 "crossProduct() for parallel vectors does not throw an exception");
+	 }
 
-        // TC02: Test crossProduct() result length
-        Vector vr = v1.crossProduct(v3);
-        assertEquals(0, vr.length() - v1.length() * v3.length(), DELTA, "ERROR: crossProduct() wrong result length");
-
-        // TC03: Test crossProduct() result orthogonality
-        assertEquals(0, vr.dotProduct(v1), DELTA, "ERROR: crossProduct() result is not orthogonal to its operands");
-        assertEquals(0, vr.dotProduct(v3), DELTA, "ERROR: crossProduct() result is not orthogonal to its operands");
-	}
 
 	/**
 	 * Test method for {@link primitives.Vector#lengthSquared()}.
@@ -122,7 +112,17 @@ class VectorTests {
 	 */
 	@Test
 	void testNormalize() {
-		fail("Not yet implemented");
+		Vector u = v1.normalize();
+		
+		 // TC01: Check if the normalized vector is a unit vector
+        assertEquals(1, u.length(), DELTA, "ERROR: the normalized vector is not a unit vector");
+
+        // TC02: Check if vectors are co-lined (cross product should throw an exception)
+        assertThrows(Exception.class, () -> v1.crossProduct(u),
+                "ERROR: the normalized vector is not parallel to the original one");
+
+        // TC03: Check if the dot product indicates opposite direction
+        assertEquals(-1, v1.dotProduct(u), DELTA, "ERROR: the normalized vector is opposite to the original one");
 	}
 
 }

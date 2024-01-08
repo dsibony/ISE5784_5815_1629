@@ -3,6 +3,7 @@
  */
 package unittests.primitives;
 
+import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -31,22 +32,14 @@ class PointTests {
 	    // ============ Equivalence Partitions Tests ==============
 		// TC01: Check if subtract method works correctly
         assertEquals(v1, p2.subtract(p1), "ERROR: (point2 - point1) does not work correctly");
-
-        // TC02: Check if subtracting a point from itself throws an exception
-        assertThrows(IllegalArgumentException.class, () -> p1.subtract(p1),
-                "ERROR: (point - itself) does not throw an exception");
-
-        // TC03: Check if the correct exception is thrown when subtracting a point from itself
-        assertThrows(Exception.class, () -> {
-            try {
-                p1.subtract(p1);
-            } catch (IllegalArgumentException ignore) {
-                // The expected exception is caught, do nothing
-            } catch (Exception ignore) {
-                throw new Exception("ERROR: (point - itself) throws wrong exception");
+        
+        // =============== Boundary Values Tests ==================
+        // TC10: Check if the correct exception is thrown when subtracting a point from itself
+        assertThrows(IllegalArgumentException.class, () -> {
+        	p1.subtract(p1);
+			out.println("ERROR: (point - itself) does not throw an exception");}, 
+                "ERROR: (point - itself) throws wrong exception");
             }
-        });
-	}
      /*
 	 * Test method for {@link primitives.Point#add(primitives.Vector)}.
 	 */
