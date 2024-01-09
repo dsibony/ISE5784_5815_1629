@@ -10,7 +10,6 @@ import primitives.Vector;
  * This class will be used as a Sphere, a geometric object
  */
 public class Sphere extends RadialGeometry {
-	@SuppressWarnings("unused")
 	private final Point center;
 
 	/**
@@ -26,8 +25,11 @@ public class Sphere extends RadialGeometry {
 
 	@Override
 	public Vector getNormal(Point p) {
-		// TODO
-		return null;
+		 // Calculate the vector from the center of the sphere to the surface point
+        Vector centerToSurface = p.subtract(center);
+
+        // Normalize the vector to get the normal vector
+        return centerToSurface.normalize();
 	}
 
 }

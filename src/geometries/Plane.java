@@ -22,8 +22,13 @@ public class Plane implements Geometry {
 	 * @param p3 third point value (used for getting the normal vector too)
 	 */
 	public Plane(Point p1, Point p2, Point p3) {
-		normal = null;
-		q = p3;
+		// Calculate vectors v1 and v2 in the plane
+        Vector v1 = p2.subtract(p1);
+        Vector v2 = p3.subtract(p1);
+
+        // Calculate the cross product of v1 and v2 to get the normal vector
+        normal = v1.crossProduct(v2).normalize();
+        q = p3;
 	}
 
 	/**

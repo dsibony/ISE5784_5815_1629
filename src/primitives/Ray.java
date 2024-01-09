@@ -7,8 +7,9 @@ package primitives;
  * Ray is used for some geometric objects
  */
 public class Ray {
-	private final Point head;
-	private final Vector direction;
+	//?not supposed to be public?
+	public final Point head;
+	public final Vector direction;
 
 	/**
 	 * Constructor to initialize Ray based object with its Point and Vector values

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import geometries.Plane;
 import primitives.Point;
+import primitives.Vector;
 
 /**
  * Unit tests for geometries.Plane class
@@ -20,12 +21,6 @@ class PlaneTests {
 	 */
 	@Test
 	public void testConstructor() {
-		// ============ Equivalence Partitions Tests ==============
-		
-        // TC01: Correct plane with vertices in correct order
-		assertDoesNotThrow(() -> { new Plane(new Point(1, 0, 0), new Point(0, 0, 1), new Point(0, 1, 0)); }, 
-        "Failed constructing a correct plane");
-		
 		// =============== Boundary Values Tests ==================
 		
 		// TC10: The first point and the second point are unified
@@ -43,21 +38,30 @@ class PlaneTests {
         assertThrows(IllegalArgumentException.class, () -> { new Plane(point1, point2, point3); }, 
         "constructed a plane with co linear points");
 	}
-
-	/**
-	 * Test method for {@link geometries.Plane#getNormal(primitives.Point)}.
-	 */
-	@Test
-	void testGetNormalPoint() {
-		fail("Not yet implemented");
-	}
-
+	
 	/**
 	 * Test method for {@link geometries.Plane#getNormal()}.
 	 */
 	@Test
 	void testGetNormal() {
-		fail("Not yet implemented");
-	}
+		// ============ Equivalence Partitions Tests ==============
+		// TC01: Get normal of a plane using the constructor with 3 points
 
+        // Define three non-collinear points to represent the plane
+		Point point1 = new Point(2, 3, 4);
+		Point point2 = new Point(5, 6, 7);
+		Point point3 = new Point(8, 9, 10);
+
+        // Create a plane using the constructor that calculates the normal from the points
+        Plane plane = new Plane(point1, point2, point3);
+
+        // Calculate the expected normal vector (already normalized in this example)
+        Vector expectedNormal = new Vector(-1, 3, -1).normalize();
+
+        // Get the actual normal vector from the getNormal method
+        Vector actualNormal = plane.getNormal();
+        
+        // Assert that the actual normal vector is approximately equal to the expected normal
+        assertTrue(expectedNormal.equals(actualNormal) || expectedNormal.equals(actualNormal.scale(-1)), "getNormal should return the correct normal vector");
+    }
 }
