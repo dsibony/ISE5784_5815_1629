@@ -17,7 +17,7 @@ public class Tube extends RadialGeometry {
 	 * Constructor to initialize Tube based object with its Ray and number values
 	 * 
 	 * @param mainRay Ray value
-	 * @param radius number value
+	 * @param radius  number value
 	 */
 	public Tube(Ray mainRay, double radius) {
 		this.mainRay = mainRay;
