@@ -24,15 +24,21 @@ public class Cylinder extends Tube {
 
 	@Override
 	public Vector getNormal(Point p) {
+		
+		// bottom base check
+		if (p.equals(mainRay.head))
+			return mainRay.direction;
+		
 		 // Project Point P onto the Axis
         double t = mainRay.direction.dotProduct(p.subtract(mainRay.head));
-        Point projectionOnAxis = mainRay.head.add(mainRay.direction.scale(t));
-
+        
         // Check if the point is in the base (at the center or on the circular boundary)
         if (t <= 0 || t >= height)
             return mainRay.direction; // normal is v
 
+        Point projectionOnAxis = mainRay.head.add(mainRay.direction.scale(t));
+
         // Calculate the Normal Vector for points on the side surface
-        return p.subtract(projectionOnAxis);
+        return (p.subtract(projectionOnAxis).normalize());
 	}
 }

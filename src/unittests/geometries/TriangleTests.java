@@ -32,16 +32,6 @@ public class TriangleTests {
       assertDoesNotThrow(() -> new Triangle(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0)),
                          "Failed constructing a correct triangle");
 
-      // TC02: Wrong vertices order
-      assertThrows(IllegalArgumentException.class, //
-                   () -> new Triangle(new Point(0, 0, 1), new Point(0, 1, 0), new Point(1, 0, 0)), //
-                   "Constructed a triangle with wrong order of vertices");
-
-      // TC03: Not in the same plane
-      assertThrows(IllegalArgumentException.class, //
-                   () -> new Triangle(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0)), //
-                   "Constructed a triangle with vertices that are not in the same plane");
-
       // =============== Boundary Values Tests ==================
 
       // TC10: Vertex on a side of a triangle

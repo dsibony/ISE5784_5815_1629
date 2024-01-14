@@ -50,13 +50,13 @@ class PlaneTests {
         // Define three non-collinear points to represent the plane
 		Point point1 = new Point(2, 3, 4);
 		Point point2 = new Point(5, 6, 7);
-		Point point3 = new Point(8, 9, 10);
+		Point point3 = new Point(1, 8, 9);
 
         // Create a plane using the constructor that calculates the normal from the points
         Plane plane = new Plane(point1, point2, point3);
 
         // Calculate the expected normal vector (already normalized in this example)
-        Vector expectedNormal = new Vector(-1, 3, -1).normalize();
+        Vector expectedNormal = new Vector(0, -0.70711, 0.70711).normalize();
 
         // Get the actual normal vector from the getNormal method
         Vector actualNormal = plane.getNormal();

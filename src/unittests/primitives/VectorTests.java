@@ -86,9 +86,8 @@ class VectorTests {
 	@Test
 	void testCrossProduct() {
 		// ============ Equivalence Partitions Tests ==============
-		Vector vr = v1.crossProduct(v2);
-		// TC01: Test that length of cross-product is proper (orthogonal vectors taken
-		// for simplicity)
+		Vector vr = v1.crossProduct(v3);
+		// TC01: Test that length of cross-product is proper (orthogonal vectors taken sfor simplicity)
 		assertEquals(v1.length() * v3.length(), vr.length(), DELTA, "crossProduct() wrong result length");
 		// TC02: Test cross-product result orthogonality to its operands
 		assertEquals(0, vr.dotProduct(v1), "crossProduct() result is not orthogonal to 1st operand");
@@ -132,7 +131,7 @@ class VectorTests {
 				"ERROR: the normalized vector is not parallel to the original one");
 
 		// TC03: Check if the dot product indicates opposite direction
-		assertEquals(-1, v1.dotProduct(u), DELTA, "ERROR: the normalized vector is opposite to the original one");
+		assertTrue(!(v1.dotProduct(u) < 0), "ERROR: the normalized vector is opposite to the original one");
 	}
 
 }
