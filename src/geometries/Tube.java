@@ -27,14 +27,14 @@ public class Tube extends RadialGeometry {
 	@Override
 	public Vector getNormal(Point p) {
 		// Project Point P onto the Axis
-        double t = mainRay.direction.dotProduct(p.subtract(mainRay.head));
-        Point projectionOnAxis = mainRay.head.add(mainRay.direction.scale(t));
+        double t = mainRay.getDirection().dotProduct(p.subtract(mainRay.getHead()));
+        Point projectionOnAxis = mainRay.getHead().add(mainRay.getDirection().scale(t));
         
         if (projectionOnAxis.equals(p))
-        	return mainRay.direction;
+        	return mainRay.getDirection();
         
         // Calculate the Normal Vector
-        return p.subtract(projectionOnAxis);
+        return p.subtract(projectionOnAxis).normalize();
 	}
 
 }

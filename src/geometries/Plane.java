@@ -20,6 +20,8 @@ public class Plane implements Geometry {
 	 * @param p1 first point value (used for getting the normal vector too)
 	 * @param p2 second point value (used for getting the normal vector too)
 	 * @param p3 third point value (used for getting the normal vector too)
+	 * 
+	 * @throws IllegalArgumentException when all the points are on the same line
 	 */
 	public Plane(Point p1, Point p2, Point p3) {
 		// Calculate vectors v1 and v2 in the plane

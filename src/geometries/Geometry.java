@@ -12,10 +12,10 @@ import primitives.Vector;
 public interface Geometry {
 	
 	/**
-	 * get normal method, used for getting the normal vector in a given geometric object
+	 * get normal method, used for getting the normal vector of a surface point in a given geometric object
 	 * 
 	 * @param p, given point
-	 * @return normal vector of the geometric object
+	 * @return the normal vector
 	 */
 	public Vector getNormal(Point p);
 }

@@ -13,7 +13,8 @@ public class Sphere extends RadialGeometry {
 	private final Point center;
 
 	/**
-	 * Constructor to initialize Double3 based object with its Point and number values
+	 * Constructor to initialize Double3 based object with its Point and number
+	 * values
 	 * 
 	 * @param center Point value
 	 * @param radius number value
@@ -25,11 +26,7 @@ public class Sphere extends RadialGeometry {
 
 	@Override
 	public Vector getNormal(Point p) {
-		 // Calculate the vector from the center of the sphere to the surface point
-        Vector centerToSurface = p.subtract(center);
-
-        // Normalize the vector to get the normal vector
-        return centerToSurface.normalize();
+		return p.subtract(center).normalize();
 	}
 
 }

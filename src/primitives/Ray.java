@@ -7,9 +7,8 @@ package primitives;
  * Ray is used for some geometric objects
  */
 public class Ray {
-	//?not supposed to be public?
-	public final Point head;
-	public final Vector direction;
+	private final Point head;
+	private final Vector direction;
 
 	/**
 	 * Constructor to initialize Ray based object with its Point and Vector values
@@ -20,6 +19,22 @@ public class Ray {
 	public Ray(Point h, Vector v) {
 		head = h;
 		direction = v.normalize();
+	}
+	
+	/** getter for head
+	 * 
+	 * @return head
+	 */
+	public Point getHead() {
+		return head;
+	}
+
+	/** getter for direction
+	 * 
+	 * @return direction
+	 */
+	public Vector getDirection() {
+		return direction;
 	}
 
 	@Override
@@ -32,8 +47,8 @@ public class Ray {
 
 	@Override
 	public String toString() {
-		return "Ray:" + direction;
-		
+		return "Ray:" + head + "->" + direction;
+
 	}
 
 }

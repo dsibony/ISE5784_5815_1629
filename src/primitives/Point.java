@@ -7,7 +7,9 @@ package primitives;
  * This class will serve all classes who want to use points 
  */
 public class Point {
+	/** zero point */
 	public static final Point ZERO = new Point(0, 0, 0);
+	/** x, y, z coordinates */
 	protected final Double3 coordinates;
 
 	/**

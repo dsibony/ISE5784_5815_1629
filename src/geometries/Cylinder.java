@@ -1,8 +1,7 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
+import static primitives.Util.*;
 
 /**
  * This class will be used as a cylinder, a geometric object
@@ -26,17 +25,17 @@ public class Cylinder extends Tube {
 	public Vector getNormal(Point p) {
 		
 		// bottom base check
-		if (p.equals(mainRay.head))
-			return mainRay.direction;
+		if (p.equals(mainRay.getHead()))
+			return mainRay.getDirection();
 		
 		 // Project Point P onto the Axis
-        double t = mainRay.direction.dotProduct(p.subtract(mainRay.head));
+        double t = mainRay.getDirection().dotProduct(p.subtract(mainRay.getHead()));
         
         // Check if the point is in the base (at the center or on the circular boundary)
-        if (t <= 0 || t >= height)
-            return mainRay.direction; // normal is v
+        if (isZero(t) || isZero(t - height))
+            return mainRay.getDirection(); // normal is v
 
-        Point projectionOnAxis = mainRay.head.add(mainRay.direction.scale(t));
+        Point projectionOnAxis = mainRay.getHead().add(mainRay.getDirection().scale(t));
 
         // Calculate the Normal Vector for points on the side surface
         return (p.subtract(projectionOnAxis).normalize());
