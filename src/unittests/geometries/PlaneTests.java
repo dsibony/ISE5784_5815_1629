@@ -79,12 +79,13 @@ class PlaneTests {
 	@Test
 	public void testFindIntersections() {
 		final Vector v001 = new Vector(0, 0, 1);
-		Plane plane = new Plane(Point.ZERO, v001);
 		final Vector v011 = new Vector(0, 1, 1);
 		final Vector v100 = new Vector(1, 0, 0);
 		final Point p01 = new Point(0, 0, -1);
 		final Point p100 = new Point(1, 0, 0);
 		final Point p001 = new Point(0, 0, 1);
+		Plane plane = new Plane(new Point(0.5, 0.5, 0), new Point(2, 0, 0), new Point(0, 2, 0));
+
 		// ============ Equivalence Partitions Tests ==============
 		// TC01: Ray intersects the plane
 		final var result01 = plane.findIntersections(new Ray(p01, v011)).stream().toList();
@@ -101,34 +102,35 @@ class PlaneTests {
 		// TC10: The ray is included in the plane
 		assertNull(plane.findIntersections(new Ray(p100, v100)), //
 				"The ray is included in the plane");
-		
+
 		// TC11: The ray is not included in the plane
 		assertNull(plane.findIntersections(new Ray(p001, v100)), //
 				"The ray is not included in the plane");
-		
+
 		// **** Group: Ray is orthogonal to the plane
 		// TC12: Ray starts before the plane
-		final var result12 = plane.findIntersections(new Ray(new Point(0, 0, -2), v001)).stream().toList();
-		final var exp12 = List.of(Point.ZERO);
+		final var result12 = plane.findIntersections(new Ray(new Point(0, 1, -2), v001)).stream().toList();
+		final var exp12 = List.of(new Point(0, 1, 0));
 		assertEquals(1, result12.size(), "Wrong number of points");
 		assertEquals(exp12, result12, "Ray crosses plane");
 
 		// TC13: Ray starts at the plane
-		assertNull(plane.findIntersections(new Ray(Point.ZERO, v001)), //
+		assertNull(plane.findIntersections(new Ray(p100, v001)), //
 				"Ray doesn't cross plane");
-		
+
 		// TC14: Ray starts after the plane
 		assertNull(plane.findIntersections(new Ray(p001, v001)), //
 				"Ray doesn't cross plane");
 
 		// **** Group: Special cases
-		// TC15: Ray is neither orthogonal nor parallel to the plane and begins at the plane
+		// TC15: Ray is neither orthogonal nor parallel to the plane and begins at the
+		// plane
 		assertNull(plane.findIntersections(new Ray(p100, v011)), //
 				"Ray doesn't cross plane");
 
 		// TC16: Ray is neither orthogonal nor parallel to the plane and begins in the
 		// same point which appears as reference point in the plane
-		assertNull(plane.findIntersections(new Ray(Point.ZERO, v011)), //
+		assertNull(plane.findIntersections(new Ray(new Point(0, 2, 0), v011)), //
 				"Ray doesn't cross plane");
 	}
 }

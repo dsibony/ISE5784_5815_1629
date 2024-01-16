@@ -82,7 +82,7 @@ public class TriangleTests {
 	 */
 	@Test
 	public void testFindIntersections() {
-		Triangle triangle = new Triangle(Point.ZERO, new Point(2, 0, 0), new Point(0, 2, 0));
+		Triangle triangle = new Triangle(new Point(-1,-1,0), new Point(2, 0, 0), new Point(0, 2, 0));
 
 		// ============ Equivalence Partitions Tests ==============
 		// TC01: Ray intersects the triangle
@@ -93,7 +93,7 @@ public class TriangleTests {
 		assertEquals(exp01, result01, "Ray crosses triangle");
 
 		// TC02: Ray intersects with the projection of the triangle
-		assertNull(triangle.findIntersections(new Ray(new Point(-1, -1, -1), new Vector(0, 0, 1))),
+		assertNull(triangle.findIntersections(new Ray(new Point(-2, -2, -1), new Vector(0, 0, 1))),
 				"Ray doesn't cross triangle");
 
 		// TC03: Ray does not intersect the triangle
@@ -102,11 +102,11 @@ public class TriangleTests {
 
 		// =============== Boundary Values Tests ==================
 		// TC10: Ray intersects with a vertex of the triangle
-		assertNull(triangle.findIntersections(new Ray(new Point(0, 0, -1), new Vector(0, 0, 1))),
+		assertNull(triangle.findIntersections(new Ray(new Point(2, 0, -1), new Vector(0, 0, 1))),
 				"Ray doesn't cross triangle");
 
 		// TC11: Ray intersects with a side of the triangle
-		assertNull(triangle.findIntersections(new Ray(new Point(0, 1, -1), new Vector(0, 0, 1))),
+		assertNull(triangle.findIntersections(new Ray(new Point(1, 1, -1), new Vector(0, 0, 1))),
 				"Ray doesn't cross triangle");
 
 		// TC12: Ray intersects with the projection of a side of the triangle
