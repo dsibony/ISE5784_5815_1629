@@ -9,7 +9,7 @@ import primitives.Vector;
 /**
  * Geometry interface used by every geometric object
  */
-public interface Geometry {
+public interface Geometry extends Intersectable{
 	
 	/**
 	 * get normal method, used for getting the normal vector of a surface point in a given geometric object

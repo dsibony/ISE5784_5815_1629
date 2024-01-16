@@ -3,11 +3,15 @@
  */
 package geometries;
 
+import java.util.List;
+
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
- * This class will be used as a plane and will have more uses as other classes extend it
+ * This class will be used as a plane and will have more uses as other classes
+ * extend it
  */
 public class Plane implements Geometry {
 	@SuppressWarnings("unused")
@@ -15,7 +19,8 @@ public class Plane implements Geometry {
 	private final Vector normal;
 
 	/**
-	 * Constructor to initialize Plane based object with its Point value and normal Vector value
+	 * Constructor to initialize Plane based object with its Point value and normal
+	 * Vector value
 	 * 
 	 * @param p1 first point value (used for getting the normal vector too)
 	 * @param p2 second point value (used for getting the normal vector too)
@@ -25,18 +30,19 @@ public class Plane implements Geometry {
 	 */
 	public Plane(Point p1, Point p2, Point p3) {
 		// Calculate vectors v1 and v2 in the plane
-        Vector v1 = p2.subtract(p1);
-        Vector v2 = p3.subtract(p1);
+		Vector v1 = p2.subtract(p1);
+		Vector v2 = p3.subtract(p1);
 
-        // Calculate the cross product of v1 and v2 to get the normal vector
-        normal = v1.crossProduct(v2).normalize();
-        q = p3;
+		// Calculate the cross product of v1 and v2 to get the normal vector
+		normal = v1.crossProduct(v2).normalize();
+		q = p3;
 	}
 
 	/**
-	 * Constructor to initialize Plane based object with its Point value and normal Vector value
+	 * Constructor to initialize Plane based object with its Point value and normal
+	 * Vector value
 	 * 
-	 * @param q Point value
+	 * @param q      Point value
 	 * @param normal Vector value
 	 */
 	public Plane(Point q, Vector normal) {
@@ -56,5 +62,10 @@ public class Plane implements Geometry {
 	 */
 	public Vector getNormal() {
 		return normal;
+	}
+
+	@Override
+	public List<Point> findIntersections(Ray ray) {
+		return null;
 	}
 }
