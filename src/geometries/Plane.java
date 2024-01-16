@@ -14,7 +14,6 @@ import primitives.Vector;
  * extend it
  */
 public class Plane implements Geometry {
-	@SuppressWarnings("unused")
 	private final Point q;
 	private final Vector normal;
 
