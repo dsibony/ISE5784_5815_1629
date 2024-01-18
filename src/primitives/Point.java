@@ -58,7 +58,7 @@ public class Point {
 	 * Subtract between two points resulting in a vector
 	 * 
 	 * @param p2 point two, to find the vector that is the result of the subtraction between 2 points 
-	 * @return the vector from p2 to 
+	 * @return the vector from p2 to p1
 	 */
 	public Vector subtract(Point p2) {
 		return new Vector(coordinates.subtract(p2.coordinates));

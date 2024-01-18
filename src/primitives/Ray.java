@@ -54,11 +54,11 @@ public class Ray {
 	
 	/** getter for specific point on the ray
 	 * 
-	 * @param t
+	 * @param t, the scalar used for scaling the vector
 	 * @return the point
 	 */
 	public Point getPoint(double t) {
-		if (!isZero(t))
+		if (isZero(t))
 			return head;
 		return this.head.add(this.direction.scale(t));
 	}

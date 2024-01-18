@@ -1,14 +1,18 @@
 /**
  * 
  */
-package primitives;
+package unittests.primitives;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
+
 /**
- * 
+ * Unit tests for primitives.Ray class
  */
 class RayTests {
 
@@ -17,14 +21,14 @@ class RayTests {
 	 */
 	@Test
 	void testGetPoint() {
-		Ray ray = new Ray(new Point(1, 0, 0), new Vector(0, 1, 1));
+		Ray ray = new Ray(new Point(1, 0, 0), new Vector(0, 0, 1));
 		// ============ Equivalence Partitions Tests ==============
 		// TC01: Negative distance
-		Point p01 = new Point(1, -1, -1);
+		Point p01 = new Point(1, 0, -1);
 		assertEquals(p01, ray.getPoint(-1), "Negative distance");
 		
 		// TC02: Positive distance
-		Point p02 = new Point(1, 1, 1);
+		Point p02 = new Point(1, 0, 1);
 		assertEquals(p02, ray.getPoint(1), "Positive distance");
 
 		// =============== Boundary Values Tests ==================

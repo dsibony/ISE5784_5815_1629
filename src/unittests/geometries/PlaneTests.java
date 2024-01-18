@@ -74,7 +74,7 @@ class PlaneTests {
 	}
 
 	/**
-	 * Test method for {@link geometries.Plane#findIntsersections(Ray ray)}.
+	 * Test method for {@link geometries.Plane#findIntersections(Ray ray)}.
 	 */
 	@Test
 	public void testFindIntersections() {

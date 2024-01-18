@@ -9,7 +9,7 @@ import geometries.*;
 import primitives.*;
 
 /**
- * 
+ * Unit tests for geometries.Geometries class
  */
 class GeometriesTests {
 	/**
