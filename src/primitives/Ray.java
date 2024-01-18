@@ -3,6 +3,8 @@
  */
 package primitives;
 
+import static primitives.Util.isZero;
+
 /**
  * Ray is used for some geometric objects
  */
@@ -48,7 +50,17 @@ public class Ray {
 	@Override
 	public String toString() {
 		return "Ray:" + head + "->" + direction;
-
+	}
+	
+	/** getter for specific point on the ray
+	 * 
+	 * @param t
+	 * @return the point
+	 */
+	public Point getPoint(double t) {
+		if (!isZero(t))
+			return head;
+		return this.head.add(this.direction.scale(t));
 	}
 
 }

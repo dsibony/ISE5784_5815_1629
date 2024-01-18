@@ -45,7 +45,7 @@ class TubeTests {
 		assertEquals(expectedNormal, actualNormal, "getNormal should return the correct normal vector");
 
 		// =============== Boundary Values Tests ==================
-		// TC10: Get normal at a point exactly on the axis of the tube
+		// TC11: Get normal at a point exactly on the axis of the tube
 
 		// Choose a point exactly on the axis of the tube
 		Point axisPoint = new Point(0, 0, 0);

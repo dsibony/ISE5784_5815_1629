@@ -44,14 +44,14 @@ class CylinderTests {
 		assertEquals(expectedTopBaseNormal, topBaseNormal, "Equivalence Test: Top base of the cylinder");
 
 		// =============== Boundary Values Tests ==================
-		// TC10: Point in the center of the bottom base
+		// TC11: Point in the center of the bottom base
 		Point inBottomBaseCenter = new Point(0, 0, 0);
 		Vector centerBottomBaseNormal = cylinder.getNormal(inBottomBaseCenter);
 		Vector expectedCenterBottomBaseNormal = new Vector(0, 1, 0);
 		assertEquals(expectedCenterBottomBaseNormal, centerBottomBaseNormal,
 				"Boundary Test: Center of the bottom base of the cylinder");
 
-		// TC11: Point in the center of the top base
+		// TC12: Point in the center of the top base
 		Point inTopBaseCenter = new Point(0, 5, 0);
 		Vector centerTopBaseNormal = cylinder.getNormal(inTopBaseCenter);
 		Vector expectedCenterTopBaseNormal = new Vector(0, 1, 0);

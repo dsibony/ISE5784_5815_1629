@@ -101,15 +101,15 @@ public class TriangleTests {
 				"Ray doesn't cross triangle");
 
 		// =============== Boundary Values Tests ==================
-		// TC10: Ray intersects with a vertex of the triangle
+		// TC11: Ray intersects with a vertex of the triangle
 		assertNull(triangle.findIntersections(new Ray(new Point(2, 0, -1), new Vector(0, 0, 1))),
 				"Ray doesn't cross triangle");
 
-		// TC11: Ray intersects with a side of the triangle
+		// TC12: Ray intersects with a side of the triangle
 		assertNull(triangle.findIntersections(new Ray(new Point(1, 1, -1), new Vector(0, 0, 1))),
 				"Ray doesn't cross triangle");
 
-		// TC12: Ray intersects with the projection of a side of the triangle
+		// TC13: Ray intersects with the projection of a side of the triangle
 		assertNull(triangle.findIntersections(new Ray(new Point(-2, 4, -1), new Vector(0, 0, 1))),
 				"Ray doesn't cross triangle");
 	}

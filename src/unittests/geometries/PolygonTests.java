@@ -49,18 +49,18 @@ public class PolygonTests {
 
       // =============== Boundary Values Tests ==================
 
-      // TC10: Vertex on a side of a quadrangular
+      // TC11: Vertex on a side of a quadrangular
       assertThrows(IllegalArgumentException.class, //
                    () -> new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0),
                                      new Point(0, 0.5, 0.5)),
                    "Constructed a polygon with vertix on a side");
 
-      // TC11: Last point = first point
+      // TC12: Last point = first point
       assertThrows(IllegalArgumentException.class, //
                    () -> new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(0, 0, 1)),
                    "Constructed a polygon with vertice on a side");
 
-      // TC12: Co-located points
+      // TC13: Co-located points
       assertThrows(IllegalArgumentException.class, //
                    () -> new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(0, 1, 0)),
                    "Constructed a polygon with vertice on a side");
