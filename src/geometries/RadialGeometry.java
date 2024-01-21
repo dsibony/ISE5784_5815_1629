@@ -7,14 +7,18 @@ package geometries;
  * This class will serve as a basis for the geometric objects
  */
 public abstract class RadialGeometry implements Geometry {
-	protected double radius;
+	protected final double radius;
+	protected final double radiusSquared;
 
+	
 	/**
-	 * setter for the radius field
-	 * 
-	 * @param radius number value
+	 * Constructor for initializing the radius
+	 * @param radius - the radius of the RadialGeomertry
 	 */
-	public void setRadius(double radius) {
+	protected RadialGeometry(double radius) {
 		this.radius = radius;
+		radiusSquared = radius * radius;
 	}
+	
+	
 }

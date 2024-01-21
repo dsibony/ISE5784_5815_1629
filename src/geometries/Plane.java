@@ -65,15 +65,15 @@ public class Plane implements Geometry {
 
 	@Override
 	public List<Point> findIntersections(Ray ray) {
-		if (!q.equals(ray.getHead())) {
-			double nv = normal.dotProduct(ray.getDirection());
-			double nQMinusP0 = normal.dotProduct(q.subtract(ray.getHead()));
-			if (!isZero(nv)) {
-				double t = alignZero(nQMinusP0 / nv);
-				if (t > 0)
-					return List.of(ray.getPoint(t));
-			}
-		}
-		return null;
+		if (q.equals(ray.getHead()))
+			return null;
+
+		double nv = normal.dotProduct(ray.getDirection());
+		double nQMinusP0 = normal.dotProduct(q.subtract(ray.getHead()));
+		if (isZero(nv))
+			return null;
+
+		double t = alignZero(nQMinusP0 / nv);
+		return t <= 0 ? null : List.of(ray.getPoint(t));
 	}
 }

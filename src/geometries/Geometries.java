@@ -23,7 +23,11 @@ public class Geometries implements Intersectable {
 	public Geometries(Intersectable... geometries) {
 		add(geometries);
 	}
-
+	
+/** Add geometries to the list of "geometries"
+ * 
+ * @param geometries - a list of intersectable geometries
+ */
 	public void add(Intersectable... geometries) {
 		for (Intersectable geom : geometries)
 			this.geometries.add(geom);

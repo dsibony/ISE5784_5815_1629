@@ -14,16 +14,18 @@ public class Ray {
 
 	/**
 	 * Constructor to initialize Ray based object with its Point and Vector values
-	 *
-	 * @param h - Point value
-	 * @param v - Vector value
+	 * NB: ray direction is normalized when initializing the ray
+	 * 
+	 * @param h - ray head
+	 * @param v - vector of ray direction
 	 */
 	public Ray(Point h, Vector v) {
 		head = h;
 		direction = v.normalize();
 	}
-	
-	/** getter for head
+
+	/**
+	 * getter for head
 	 * 
 	 * @return head
 	 */
@@ -31,7 +33,8 @@ public class Ray {
 		return head;
 	}
 
-	/** getter for direction
+	/**
+	 * getter for direction (it's already normalized!)
 	 * 
 	 * @return direction
 	 */
@@ -51,8 +54,9 @@ public class Ray {
 	public String toString() {
 		return "Ray:" + head + "->" + direction;
 	}
-	
-	/** getter for specific point on the ray
+
+	/**
+	 * getter for specific point on the ray
 	 * 
 	 * @param t, the scalar used for scaling the vector
 	 * @return the point

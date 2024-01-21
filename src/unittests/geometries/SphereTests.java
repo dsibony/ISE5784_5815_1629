@@ -96,7 +96,7 @@ class SphereTests {
 		// **** Group: Ray's line goes through the center
 		// TC13: Ray starts before the sphere (2 points)
 		final var result13 = sphere.findIntersections(new Ray(new Point(1,0,2), v001.scale(-1))).stream()
-				.sorted(Comparator.comparingDouble(p -> p.distance(p01))).toList();
+				.sorted(Comparator.comparingDouble(p -> p.distance(new Point(1,0,2)))).toList();
 		final var exp13 = List.of(p101, new Point(1,0,-1));
 		assertEquals(2, result13.size(), "Wrong number of points");
 		assertEquals(exp13, result13, "Ray crosses sphere");

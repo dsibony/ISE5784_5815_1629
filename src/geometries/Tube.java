@@ -22,8 +22,8 @@ public class Tube extends RadialGeometry {
 	 * @param radius  number value
 	 */
 	public Tube(Ray mainRay, double radius) {
+		super(radius);
 		this.mainRay = mainRay;
-		this.radius = radius;
 	}
 
 	@Override

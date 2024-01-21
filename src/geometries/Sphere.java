@@ -24,8 +24,8 @@ public class Sphere extends RadialGeometry {
 	 * @param radius number value
 	 */
 	public Sphere(Point center, double radius) {
+		super(radius);
 		this.center = center;
-		this.radius = radius;
 	}
 
 	@Override
@@ -36,21 +36,22 @@ public class Sphere extends RadialGeometry {
 	@Override
 	public List<Point> findIntersections(Ray ray) {
 		if (center == ray.getHead())
-			return List.of(ray.getPoint(radius/ray.getDirection().length()));
+			return List.of(ray.getPoint(radius));
+
 		Vector u = center.subtract(ray.getHead());
 		double tm = alignZero(ray.getDirection().dotProduct(u));
-		double d = Math.sqrt(u.lengthSquared() - tm * tm);
-		if (d < radius) {
-			double th = Math.sqrt(radius * radius - d * d);
-			double t1 = alignZero(tm + th);
-			double t2 = alignZero(tm - th);
-			if (t1 > 0 && t2 > 0)
-				return List.of(ray.getPoint(t2), ray.getPoint(t1));
-			if (t1 > 0)
-				return List.of(ray.getPoint(t1));
-			if (t2 > 0)
-				return List.of(ray.getPoint(t2));
-		}
-		return null;
+		double dSquared = u.lengthSquared() - tm * tm;
+		double thSquared = alignZero(radiusSquared - dSquared);
+		if (thSquared <= 0)
+			return null;
+
+		double th = Math.sqrt(thSquared);
+		double t2 = alignZero(tm + th);
+		if (t2 <= 0)
+			// since t2>t1 - both the points are behind the head of the ray
+			return null;
+
+		double t1 = alignZero(tm - th);
+		return t1 <= 0 ? List.of(ray.getPoint(t2)) : List.of(ray.getPoint(t2), ray.getPoint(t1));
 	}
 }
