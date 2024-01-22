@@ -32,28 +32,17 @@ public class Triangle extends Polygon {
 		if (intersections.get(0).equals(vertices.get(0)) || intersections.get(0).equals(vertices.get(1))
 				|| intersections.get(0).equals(vertices.get(2)))
 			return null;
-
-		Vector v01 = vertices.get(1).subtract(vertices.get(0));
-		Vector v0P = intersections.get(0).subtract(vertices.get(0));
-		Vector v12 = vertices.get(2).subtract(vertices.get(1));
-		Vector v02 = vertices.get(2).subtract(vertices.get(0));
-		Vector v2P = intersections.get(0).subtract(vertices.get(2));
-
-		Vector cp1 = v12.crossProduct(v2P);
-		Vector cp2 = v12.crossProduct(v01.scale(-1));
-		Vector cp3 = v02.crossProduct(v0P);
-		Vector cp4 = v02.crossProduct(v01);
-		Vector cp5 = v01.crossProduct(v0P);
-		Vector cp6 = v01.crossProduct(v02);
-
-		return (cp1.dotProduct(cp2) >= 0 && cp3.dotProduct(cp4) >= 0 && cp5.dotProduct(cp6) >= 0) ? intersections
-				: null;
-		/*
-		 * if (isZero(n1.length()) || isZero(n2.length()) || isZero(n3.length())) throw
-		 * new
-		 * IllegalArgumentException("The length of one or more of the vectors is zero");
-		 * return (n1.dotProduct(n2) >= 0 && n1.dotProduct(n3) >= 0) ? intersections :
-		 * null;
-		 */
+		Vector v1 = vertices.get(0).subtract(ray.getHead());
+		Vector v2 = vertices.get(1).subtract(ray.getHead());
+		Vector v3 = vertices.get(2).subtract(ray.getHead());
+		Vector n1 = v1.crossProduct(v2).normalize();
+		Vector n2 = v2.crossProduct(v3).normalize();
+		Vector n3 = v3.crossProduct(v1).normalize();
+		double dp1 = ray.getDirection().dotProduct(n1);
+		double dp2 = ray.getDirection().dotProduct(n2);
+		double dp3 = ray.getDirection().dotProduct(n3);
+		if (isZero(dp1) || isZero(dp2) || isZero(dp3))
+			return null;
+		return ((dp1 > 0 && dp2 > 0 && dp3 > 0) || (dp1 < 0 && dp2 < 0 && dp3 < 0)) ? intersections : null;
 	}
 }

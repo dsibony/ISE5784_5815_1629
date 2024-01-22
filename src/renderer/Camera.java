@@ -4,19 +4,21 @@
 package renderer;
 
 import primitives.*;
-import static primitives.Util.isZero;
+import static primitives.Util.*;
+
+import java.util.MissingResourceException;
 
 /**
  * 
  */
 public class Camera implements Cloneable {
-	private Point location;
+	private Point p0;
 	private Vector vRight;
 	private Vector vUp;
 	private Vector vTo;
-	private double height = 0d;
-	private double width = 0d;
-	private double distance = 0d;
+	private double viewPlaneHeight = 0d;
+	private double viewPlaneWidth = 0d;
+	private double viewPlaneDistance = 0d;
 
 	/**
 	 * 
@@ -37,22 +39,22 @@ public class Camera implements Cloneable {
 		 * @param camera - Used for the Camera values
 		 */
 		public Builder(Camera camera) {
-			this.camera.location = camera.getLocation();
+			this.camera.p0 = camera.getP0();
 			this.camera.vRight = camera.getvRight();
 			this.camera.vUp = camera.getvUp();
 			this.camera.vTo = camera.getvTo();
-			this.camera.height = camera.getHeight();
-			this.camera.width = camera.getWidth();
-			this.camera.distance = camera.getDistance();
+			this.camera.viewPlaneHeight = camera.getHeight();
+			this.camera.viewPlaneWidth = camera.getWidth();
+			this.camera.viewPlaneDistance = camera.getDistance();
 		}
 
 		/**
-		 * Sets the location value
+		 * Sets the p0 value
 		 * 
-		 * @param location - the new location of the camera
+		 * @param p0 - the new p0 of the camera
 		 */
-		public Builder setLocation(Point location) {
-			this.camera.location = location;
+		public Builder setP0(Point p0) {
+			this.camera.p0 = p0;
 			return this;
 		}
 
@@ -73,14 +75,14 @@ public class Camera implements Cloneable {
 		/**
 		 * Sets the view plane
 		 * 
-		 * @param width  - the new width value
-		 * @param height - the new height value
+		 * @param width  - the new view plane width value
+		 * @param height - the new view plane height value
 		 */
 		public Builder setVpSize(double width, double height) {
 			if (width <= 0 || height <= 0)
 				throw new IllegalArgumentException("illegal view plane values");
-			this.camera.width = width;
-			this.camera.height = height;
+			this.camera.viewPlaneWidth = width;
+			this.camera.viewPlaneHeight = height;
 			return this;
 		}
 
@@ -92,10 +94,39 @@ public class Camera implements Cloneable {
 		public Builder setVpDistance(double distance) {
 			if (distance <= 0)
 				throw new IllegalArgumentException("illegal distance value");
-			this.camera.distance = distance;
+			this.camera.viewPlaneDistance = distance;
 			return this;
 		}
-
+		
+		/**
+		 * TODO
+		 * @return
+		 */
+		public Camera build() {
+			String problemDesc = "Missing rendering data";
+			String problemLoc = "Camera";
+//			if (camera.imageWriter == null) throw new MissingResourceException(…);
+//			if (camera.rayTracer == null) throw new ... 
+			if (camera.p0 == null ) throw new MissingResourceException(problemDesc, problemLoc, "p0 is missing");
+			if (camera.vUp == null) throw new MissingResourceException(problemDesc, problemLoc, "vUp is missing"); 
+			if (camera.vTo == null) throw new MissingResourceException(problemDesc, problemLoc, "vTo is missing");
+			if (alignZero(camera.viewPlaneWidth) == 0) throw new MissingResourceException(problemDesc, problemLoc, "view plane width is missing");
+			if (alignZero(camera.viewPlaneWidth) < 0) throw new IllegalArgumentException("view plane width has an illegal value");
+			if (alignZero(camera.viewPlaneHeight) == 0) throw new MissingResourceException(problemDesc, problemLoc, "view plane height is missing");
+			if (alignZero(camera.viewPlaneHeight) < 0) throw new IllegalArgumentException("view plane height has an illegal value");
+			if (alignZero(camera.viewPlaneDistance) == 0) throw new MissingResourceException(problemDesc, problemLoc, "view plane height is missing");
+			if (alignZero(camera.viewPlaneDistance) < 0) throw new IllegalArgumentException("view plane distance has an illegal value");
+			if (!isZero(camera.vUp.dotProduct(camera.vTo))) throw new IllegalArgumentException("view plane vectors aren't orthogonal to each other");
+			camera.vTo.normalize();
+			camera.vUp.normalize();
+			camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
+//			camera.viewPlanePC = camera.p0.add(camera.vTo.scale(camera.viewPlaneDistance)); 
+			try {
+				return (Camera) camera.clone();
+			} catch (CloneNotSupportedException ignore) {
+				return null;
+			}
+		}
 	}
 
 	/**
@@ -104,60 +135,67 @@ public class Camera implements Cloneable {
 	private Camera() {
 	}
 
-	/**
-	 * @return the location
+	/** p0 getter
+	 * 
+	 * @return p0
 	 */
-	public Point getLocation() {
-		return location;
+	public Point getP0() {
+		return p0;
 	}
 
-	/**
+	/** vRight getter
+	 * 
 	 * @return the vRight
 	 */
 	public Vector getvRight() {
 		return vRight;
 	}
 
-	/**
+	/** vUp getter
+	 * 
 	 * @return the vUp
 	 */
 	public Vector getvUp() {
 		return vUp;
 	}
 
-	/**
+	/** vTo getter
+	 * 
 	 * @return the vTo
 	 */
 	public Vector getvTo() {
 		return vTo;
 	}
 
-	/**
+	/** height getter
+	 *  
 	 * @return the height
 	 */
 	public double getHeight() {
-		return height;
+		return viewPlaneHeight;
 	}
 
-	/**
+	/** width getter
+	 * 
 	 * @return the width
 	 */
 	public double getWidth() {
-		return width;
+		return viewPlaneWidth;
 	}
 
-	/**
+	/** distance getter
+	 * 
 	 * @return the distance
 	 */
 	public double getDistance() {
-		return distance;
+		return viewPlaneDistance;
 	}
 
-	/**
+	/** builder getter
 	 * 
-	 * @return
+	 * @return a new builder object
 	 */
-	public Builder getBuilder() {
+	public static Builder getBuilder() {
 		return new Builder();
 	}
 

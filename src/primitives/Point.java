@@ -23,15 +23,6 @@ public class Point {
 		coordinates = new Double3(d1, d2, d3);
 	}
 
-	/** Getter for coordinates
-	 * 
-	 * @return coordinates
-	 */
-	public double[] getCoordinates() {
-		double xyz[] = {coordinates.d1, coordinates.d2, coordinates.d3 };
-		return xyz;
-	}
-
 	/**
 	 * Constructor to initialize Point based object with its Double3 coordinate
 	 * 
