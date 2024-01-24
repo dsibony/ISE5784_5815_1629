@@ -6,22 +6,25 @@ package renderer;
 import primitives.*;
 import static primitives.Util.*;
 
+import java.util.List;
 import java.util.MissingResourceException;
 
+import geometries.*;
+
 /**
- * 
+ * Camera class, used for viewing a scene
  */
 public class Camera implements Cloneable {
 	private Point p0;
 	private Vector vRight;
 	private Vector vUp;
 	private Vector vTo;
-	private double viewPlaneHeight = 0d;
-	private double viewPlaneWidth = 0d;
-	private double viewPlaneDistance = 0d;
+	private double viewPlaneHeight = 0.0;
+	private double viewPlaneWidth = 0.0;
+	private double viewPlaneDistance = 0.0;
 
 	/**
-	 * 
+	 * Builder class, used for building cameras
 	 */
 	public static class Builder {
 		private final Camera camera = new Camera();
@@ -52,6 +55,7 @@ public class Camera implements Cloneable {
 		 * Sets the p0 value
 		 * 
 		 * @param p0 - the new p0 of the camera
+		 * @return Builder - after we set the p0 value in the builder we return it
 		 */
 		public Builder setP0(Point p0) {
 			this.camera.p0 = p0;
@@ -63,8 +67,9 @@ public class Camera implements Cloneable {
 		 * 
 		 * @param vUp - the new up vector
 		 * @param vTo - the new to vector
+		 * @return Builder - after we set the Vector values in the builder we return it
 		 */
-		public Builder setDirection(Vector vUp, Vector vTo) {
+		public Builder setDirection(Vector vTo, Vector vUp) {
 			if (!isZero(vUp.dotProduct(vTo)))
 				throw new IllegalArgumentException("Vectors are not orthogonal to each other");
 			this.camera.vUp = vUp.normalize();
@@ -77,6 +82,7 @@ public class Camera implements Cloneable {
 		 * 
 		 * @param width  - the new view plane width value
 		 * @param height - the new view plane height value
+		 * @return Builder - after we set the view plane values we return the builder
 		 */
 		public Builder setVpSize(double width, double height) {
 			if (width <= 0 || height <= 0)
@@ -90,6 +96,7 @@ public class Camera implements Cloneable {
 		 * Sets the distance of the view plane
 		 * 
 		 * @param distance - the new distance value
+		 * @return Builder - after we set the view plane distance we return the builder
 		 */
 		public Builder setVpDistance(double distance) {
 			if (distance <= 0)
@@ -97,26 +104,37 @@ public class Camera implements Cloneable {
 			this.camera.viewPlaneDistance = distance;
 			return this;
 		}
-		
+
 		/**
-		 * TODO
-		 * @return
+		 * builds a camera while checking if the values are missing or are illegal
+		 * 
+		 * @return the camera built by the method
 		 */
 		public Camera build() {
 			String problemDesc = "Missing rendering data";
 			String problemLoc = "Camera";
 //			if (camera.imageWriter == null) throw new MissingResourceException(…);
 //			if (camera.rayTracer == null) throw new ... 
-			if (camera.p0 == null ) throw new MissingResourceException(problemDesc, problemLoc, "p0 is missing");
-			if (camera.vUp == null) throw new MissingResourceException(problemDesc, problemLoc, "vUp is missing"); 
-			if (camera.vTo == null) throw new MissingResourceException(problemDesc, problemLoc, "vTo is missing");
-			if (alignZero(camera.viewPlaneWidth) == 0) throw new MissingResourceException(problemDesc, problemLoc, "view plane width is missing");
-			if (alignZero(camera.viewPlaneWidth) < 0) throw new IllegalArgumentException("view plane width has an illegal value");
-			if (alignZero(camera.viewPlaneHeight) == 0) throw new MissingResourceException(problemDesc, problemLoc, "view plane height is missing");
-			if (alignZero(camera.viewPlaneHeight) < 0) throw new IllegalArgumentException("view plane height has an illegal value");
-			if (alignZero(camera.viewPlaneDistance) == 0) throw new MissingResourceException(problemDesc, problemLoc, "view plane height is missing");
-			if (alignZero(camera.viewPlaneDistance) < 0) throw new IllegalArgumentException("view plane distance has an illegal value");
-			if (!isZero(camera.vUp.dotProduct(camera.vTo))) throw new IllegalArgumentException("view plane vectors aren't orthogonal to each other");
+			if (camera.p0 == null)
+				throw new MissingResourceException(problemDesc, problemLoc, "p0 is missing");
+			if (camera.vUp == null)
+				throw new MissingResourceException(problemDesc, problemLoc, "vUp is missing");
+			if (camera.vTo == null)
+				throw new MissingResourceException(problemDesc, problemLoc, "vTo is missing");
+			if (alignZero(camera.viewPlaneWidth) == 0)
+				throw new MissingResourceException(problemDesc, problemLoc, "view plane width is missing");
+			if (alignZero(camera.viewPlaneWidth) < 0)
+				throw new IllegalArgumentException("view plane width has an illegal value");
+			if (alignZero(camera.viewPlaneHeight) == 0)
+				throw new MissingResourceException(problemDesc, problemLoc, "view plane height is missing");
+			if (alignZero(camera.viewPlaneHeight) < 0)
+				throw new IllegalArgumentException("view plane height has an illegal value");
+			if (alignZero(camera.viewPlaneDistance) == 0)
+				throw new MissingResourceException(problemDesc, problemLoc, "view plane height is missing");
+			if (alignZero(camera.viewPlaneDistance) < 0)
+				throw new IllegalArgumentException("view plane distance has an illegal value");
+			if (!isZero(camera.vUp.dotProduct(camera.vTo)))
+				throw new IllegalArgumentException("view plane vectors aren't orthogonal to each other");
 			camera.vTo.normalize();
 			camera.vUp.normalize();
 			camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
@@ -135,7 +153,8 @@ public class Camera implements Cloneable {
 	private Camera() {
 	}
 
-	/** p0 getter
+	/**
+	 * p0 getter
 	 * 
 	 * @return p0
 	 */
@@ -143,7 +162,8 @@ public class Camera implements Cloneable {
 		return p0;
 	}
 
-	/** vRight getter
+	/**
+	 * vRight getter
 	 * 
 	 * @return the vRight
 	 */
@@ -151,7 +171,8 @@ public class Camera implements Cloneable {
 		return vRight;
 	}
 
-	/** vUp getter
+	/**
+	 * vUp getter
 	 * 
 	 * @return the vUp
 	 */
@@ -159,7 +180,8 @@ public class Camera implements Cloneable {
 		return vUp;
 	}
 
-	/** vTo getter
+	/**
+	 * vTo getter
 	 * 
 	 * @return the vTo
 	 */
@@ -167,15 +189,17 @@ public class Camera implements Cloneable {
 		return vTo;
 	}
 
-	/** height getter
-	 *  
+	/**
+	 * height getter
+	 * 
 	 * @return the height
 	 */
 	public double getHeight() {
 		return viewPlaneHeight;
 	}
 
-	/** width getter
+	/**
+	 * width getter
 	 * 
 	 * @return the width
 	 */
@@ -183,7 +207,8 @@ public class Camera implements Cloneable {
 		return viewPlaneWidth;
 	}
 
-	/** distance getter
+	/**
+	 * distance getter
 	 * 
 	 * @return the distance
 	 */
@@ -191,7 +216,8 @@ public class Camera implements Cloneable {
 		return viewPlaneDistance;
 	}
 
-	/** builder getter
+	/**
+	 * builder getter
 	 * 
 	 * @return a new builder object
 	 */
@@ -200,14 +226,44 @@ public class Camera implements Cloneable {
 	}
 
 	/**
+	 * constructs a ray from the camera to the center of a view plane pixel given the location of the pixel
 	 * 
-	 * @param nX
-	 * @param nY
-	 * @param j
-	 * @param i
-	 * @return
+	 * @param nX - number of pixels in a row
+	 * @param nY - number of pixels in a column
+	 * @param j - the x location of the view plane pixel
+	 * @param i - the y location of the view plane pixel
+	 * @return the ray from the camera to the center of a view plane pixel
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		return null;
+		Point pIJ = p0.add(vTo.scale(viewPlaneDistance));
+		double rX = viewPlaneWidth / (double) nX;
+		double rY = viewPlaneHeight / (double) nY;
+		double xJ = rX * ((double) j - ((double) nX - 1) / 2);
+		double yI = rY * -((double) i - ((double) nY - 1) / 2);
+		if (!isZero(xJ))
+			pIJ = pIJ.add(vRight.scale(xJ));
+		if (!isZero(yI))
+			pIJ = pIJ.add(vUp.scale(yI));
+		return (new Ray(p0, pIJ.subtract(p0)));
+	}
+
+	/**
+	 * finds the number of intersections of camera rays given the geometries, the number of x and y pixels
+	 * 
+	 * @param geo - the geometries used for the intersections
+	 * @param nX - number of pixels in a row
+	 * @param nY - number of pixels in a column
+	 * @return the number of intersections with the geometries
+	 */
+	public int numOfIntersections(Geometries geo, int nX, int nY) {
+		int num = 0;
+		for (int i = 0; i < nY ; i++) {
+			for (int j = 0; j < nX; j++) {
+				List<Point> list = geo.findIntersections(this.constructRay(3, 3, i, j));
+				if (list != null)
+					num = num + list.size();
+			}
+		}
+		return num;
 	}
 }
