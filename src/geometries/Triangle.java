@@ -5,7 +5,7 @@ package geometries;
 
 import java.util.List;
 import primitives.*;
-import static primitives.Util.isZero;
+import static primitives.Util.*;
 
 /**
  * This class will be used as a Triangle, a geometric object
@@ -29,20 +29,23 @@ public class Triangle extends Polygon {
 		if (intersections == null)
 			return null;
 
-		if (intersections.get(0).equals(vertices.get(0)) || intersections.get(0).equals(vertices.get(1))
-				|| intersections.get(0).equals(vertices.get(2)))
-			return null;
-		Vector v1 = vertices.get(0).subtract(ray.getHead());
-		Vector v2 = vertices.get(1).subtract(ray.getHead());
-		Vector v3 = vertices.get(2).subtract(ray.getHead());
+		var p0 = ray.getHead();
+
+		Vector v1 = vertices.get(0).subtract(p0);
+		Vector v2 = vertices.get(1).subtract(p0);
 		Vector n1 = v1.crossProduct(v2).normalize();
+		double dp1 = alignZero(ray.getDirection().dotProduct(n1));
+		if (dp1 == 0) return null;
+
+		Vector v3 = vertices.get(2).subtract(p0);
 		Vector n2 = v2.crossProduct(v3).normalize();
+		double dp2 = alignZero(ray.getDirection().dotProduct(n2));
+		if (dp1 * dp2 <= 0) return null;
+
 		Vector n3 = v3.crossProduct(v1).normalize();
-		double dp1 = ray.getDirection().dotProduct(n1);
-		double dp2 = ray.getDirection().dotProduct(n2);
-		double dp3 = ray.getDirection().dotProduct(n3);
-		if (isZero(dp1) || isZero(dp2) || isZero(dp3))
-			return null;
-		return ((dp1 > 0 && dp2 > 0 && dp3 > 0) || (dp1 < 0 && dp2 < 0 && dp3 < 0)) ? intersections : null;
+		double dp3 = alignZero(ray.getDirection().dotProduct(n3));
+		if (dp1 * dp3 <= 0) return null;
+
+		return intersections;
 	}
 }

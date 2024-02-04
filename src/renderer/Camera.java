@@ -6,10 +6,7 @@ package renderer;
 import primitives.*;
 import static primitives.Util.*;
 
-import java.util.List;
 import java.util.MissingResourceException;
-
-import geometries.*;
 
 /**
  * Camera class, used for viewing a scene
@@ -245,25 +242,5 @@ public class Camera implements Cloneable {
 		if (!isZero(yI))
 			pIJ = pIJ.add(vUp.scale(yI));
 		return (new Ray(p0, pIJ.subtract(p0)));
-	}
-
-	/**
-	 * finds the number of intersections of camera rays given the geometries, the number of x and y pixels
-	 * 
-	 * @param geo - the geometries used for the intersections
-	 * @param nX - number of pixels in a row
-	 * @param nY - number of pixels in a column
-	 * @return the number of intersections with the geometries
-	 */
-	public int numOfIntersections(Geometries geo, int nX, int nY) {
-		int num = 0;
-		for (int i = 0; i < nY ; i++) {
-			for (int j = 0; j < nX; j++) {
-				List<Point> list = geo.findIntersections(this.constructRay(3, 3, i, j));
-				if (list != null)
-					num = num + list.size();
-			}
-		}
-		return num;
 	}
 }

@@ -44,9 +44,8 @@ public class Ray {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
 		return (obj instanceof Ray other) && direction.equals(other.direction) && head.equals(other.head);
 	}
 
@@ -62,9 +61,7 @@ public class Ray {
 	 * @return the point
 	 */
 	public Point getPoint(double t) {
-		if (isZero(t))
-			return head;
-		return this.head.add(this.direction.scale(t));
+		return isZero(t) ? head : this.head.add(this.direction.scale(t));
 	}
 
 }

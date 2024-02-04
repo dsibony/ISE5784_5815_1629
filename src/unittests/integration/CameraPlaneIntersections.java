@@ -3,10 +3,8 @@
  */
 package unittests.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
-
+import static unittests.integration.IntegrationUtil.*;
 import geometries.*;
 import primitives.*;
 import renderer.Camera;
@@ -29,19 +27,17 @@ class CameraPlaneIntersections {
 	void test() {
 		// TC01: The plane is orthogonal to the view plane rays
 		Camera camera1 = cameraBuilder.setVpSize(3, 3).build();
-		assertEquals(9,
-				camera1.numOfIntersections(new Geometries(new Plane(new Point(0, 0, -3), new Vector(0, 0, 1))), 3, 3),
+		assertIntersections(9, camera1, new Geometries(new Plane(new Point(0, 0, -3), new Vector(0, 0, 1))), 3, 3,
 				"Plane is orthogonal to the view plane rays");
 
 		// TC02: The plane is in front of the view plane but is not orthogonal to the
 		// rays coming from it
-		assertEquals(9,
-				camera1.numOfIntersections(new Geometries(new Plane(new Point(0, 0, -3), new Vector(0, 1, -3))), 3, 3),
+		assertIntersections(9, camera1, new Geometries(new Plane(new Point(0, 0, -3), new Vector(0, 1, -3))), 3, 3,
 				"Plane is not orthogonal to the view plane rays");
 
 		// TC03: The plane is parallel
-		assertEquals(6,
-				camera1.numOfIntersections(new Geometries(new Plane(new Point(0, 0, -4), new Vector(0, 1, -1))), 3, 3),
+		assertIntersections(6,
+				camera1, new Geometries(new Plane(new Point(0, 0, -4), new Vector(0, 1, -1))), 3, 3,
 				"Plane is in an angle towards the view plane");
 	}
 

@@ -3,8 +3,7 @@
  */
 package unittests.integration;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static unittests.integration.IntegrationUtil.*;
 import org.junit.jupiter.api.Test;
 
 import geometries.*;
@@ -29,17 +28,13 @@ class CameraTriangleIntersections {
 	void test() {
 		// TC01: The triangle is in front of only one pixel from the view plane
 		Camera camera1 = cameraBuilder.setVpSize(3, 3).build();
-		assertEquals(1,
-				camera1.numOfIntersections(
-						new Geometries(new Triangle(new Point(0, 1, -2), new Point(1, -1, 2), new Point(1, -1, -2))), 3,
-						3),
+		assertIntersections(1, camera1,
+				new Geometries(new Triangle(new Point(0, 1, -2), new Point(1, -1, 2), new Point(1, -1, -2))), 3, 3,
 				"Triangle is in front of one view plane pixel");
 
 		// TC02: The triangle is in front of multiple pixels from the view plane
-		assertEquals(2,
-				camera1.numOfIntersections(
-						new Geometries(new Triangle(new Point(0, 20, -2), new Point(1, -1, -2), new Point(-1, -1, -2))),
-						3, 3),
+		assertIntersections(2, camera1,
+				new Geometries(new Triangle(new Point(0, 20, -2), new Point(1, -1, -2), new Point(-1, -1, -2))), 3, 3,
 				"Triangle is in front of two view plane pixels");
 	}
 
