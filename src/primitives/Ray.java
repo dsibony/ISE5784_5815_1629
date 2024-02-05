@@ -5,6 +5,8 @@ package primitives;
 
 import static primitives.Util.isZero;
 
+import java.util.List;
+
 /**
  * Ray is used for some geometric objects
  */
@@ -64,4 +66,25 @@ public class Ray {
 		return isZero(t) ? head : this.head.add(this.direction.scale(t));
 	}
 
+	/**
+	 * this method finds the closest point to the ray's head
+	 * 
+	 * @param list - list of points
+	 * @return the closest point to the ray's head
+	 */
+	public Point findClosestPoint(List<Point> list) {
+		if (list.isEmpty())
+			return null;
+		Point closestPoint = list.get(0);
+		double distance = this.head.distance(closestPoint);
+		double newDistance;
+		for (Point p : list) {
+			newDistance = this.head.distance(p);
+			if (newDistance < distance) {
+				distance = newDistance;
+				closestPoint = p;
+			}
+		}
+		return closestPoint;
+	}
 }

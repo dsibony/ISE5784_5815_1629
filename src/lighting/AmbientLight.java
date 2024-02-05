@@ -7,7 +7,7 @@ import primitives.Color;
 import primitives.Double3;
 
 /**
- * 
+ * AmbientLight class used for taking the ambient light into account when calculating the color of an object
  */
 public class AmbientLight {
 	private final Color intensity;

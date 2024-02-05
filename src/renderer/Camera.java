@@ -19,6 +19,14 @@ public class Camera implements Cloneable {
 	private double viewPlaneHeight = 0.0;
 	private double viewPlaneWidth = 0.0;
 	private double viewPlaneDistance = 0.0;
+	private ImageWriter imageWriter;
+	private RayTracerBase rayTracer;
+
+	/**
+	 * Empty default constructor
+	 */
+	private Camera() {
+	}
 
 	/**
 	 * Builder class, used for building cameras
@@ -103,6 +111,26 @@ public class Camera implements Cloneable {
 		}
 
 		/**
+		 * Setter for imageWriter
+		 * 
+		 * @param imageWriter - the new imageWriter
+		 */
+		public Builder setImageWriter(ImageWriter imageWriter) {
+			this.camera.imageWriter = imageWriter;
+			return this;
+		}
+
+		/**
+		 * Setter for rayTracer
+		 * 
+		 * @param rayTracer - the new rayTracer
+		 */
+		public Builder setRayTracer(RayTracerBase rayTracer) {
+			this.camera.rayTracer = rayTracer;
+			return this;
+		}
+
+		/**
 		 * builds a camera while checking if the values are missing or are illegal
 		 * 
 		 * @return the camera built by the method
@@ -118,6 +146,10 @@ public class Camera implements Cloneable {
 				throw new MissingResourceException(problemDesc, problemLoc, "vUp is missing");
 			if (camera.vTo == null)
 				throw new MissingResourceException(problemDesc, problemLoc, "vTo is missing");
+			if (camera.imageWriter == null)
+				throw new MissingResourceException(problemDesc, problemLoc, "imageWriter is missing");
+			if (camera.rayTracer == null)
+				throw new MissingResourceException(problemDesc, problemLoc, "rayTracer is missing");
 			if (alignZero(camera.viewPlaneWidth) == 0)
 				throw new MissingResourceException(problemDesc, problemLoc, "view plane width is missing");
 			if (alignZero(camera.viewPlaneWidth) < 0)
@@ -142,12 +174,6 @@ public class Camera implements Cloneable {
 				return null;
 			}
 		}
-	}
-
-	/**
-	 * Empty default constructor
-	 */
-	private Camera() {
 	}
 
 	/**
@@ -223,12 +249,13 @@ public class Camera implements Cloneable {
 	}
 
 	/**
-	 * constructs a ray from the camera to the center of a view plane pixel given the location of the pixel
+	 * constructs a ray from the camera to the center of a view plane pixel given
+	 * the location of the pixel
 	 * 
 	 * @param nX - number of pixels in a row
 	 * @param nY - number of pixels in a column
-	 * @param j - the x location of the view plane pixel
-	 * @param i - the y location of the view plane pixel
+	 * @param j  - the x location of the view plane pixel
+	 * @param i  - the y location of the view plane pixel
 	 * @return the ray from the camera to the center of a view plane pixel
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
@@ -242,5 +269,49 @@ public class Camera implements Cloneable {
 		if (!isZero(yI))
 			pIJ = pIJ.add(vUp.scale(yI));
 		return (new Ray(p0, pIJ.subtract(p0)));
+	}
+
+	/**
+	 * 
+	 */
+	public Camera renderImage() {
+		int nX = imageWriter.getNx();
+		int nY = imageWriter.getNy();
+		for (int i = 0; i < nY; i++) {
+			for (int j = 0; j < nX; j++) {
+				castRay(nX, nY, j, i);
+			}
+		}
+		return this;
+	}
+
+	private void castRay(int nX, int nY, int column, int row) {
+		imageWriter.writePixel(row, column, this.rayTracer.traceRay(this.constructRay(nX, nY, column, row)));
+		
+		
+	}
+
+	/**
+	 * colors the lines according to the interval
+	 * 
+	 * @param interval - the interval by which the lines are chosen
+	 * @param color    - the color used for coloring the lines
+	 */
+	public Camera printGrid(int interval, Color color) {
+		for (int i = 0; i < 800; i++) {
+			for (int j = 0; j < 500; j++) {
+				if (i % interval == 0 || j % interval == 0)
+					imageWriter.writePixel(i, j, color);
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * Function writeToImage produces unoptimized png file of the image according to
+	 * pixel color matrix in the directory of the project
+	 */
+	public void writeToImage() {
+		imageWriter.writeToImage();
 	}
 }
