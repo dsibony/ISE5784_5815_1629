@@ -27,7 +27,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	public Color traceRay(Ray ray) {
 		var intersections = this.scene.geometries.findIntersections(ray);
 		if (intersections == null)
-			return null;
+			return this.scene.background;
 		return this.calcColor(ray.findClosestPoint(intersections));
 		
 	}

@@ -114,6 +114,7 @@ public class Camera implements Cloneable {
 		 * Setter for imageWriter
 		 * 
 		 * @param imageWriter - the new imageWriter
+		 * @return Builder - after we set the imageWriter we return the builder
 		 */
 		public Builder setImageWriter(ImageWriter imageWriter) {
 			this.camera.imageWriter = imageWriter;
@@ -124,6 +125,7 @@ public class Camera implements Cloneable {
 		 * Setter for rayTracer
 		 * 
 		 * @param rayTracer - the new rayTracer
+		 * @return Builder - after we set the rayTracer we return the builder
 		 */
 		public Builder setRayTracer(RayTracerBase rayTracer) {
 			this.camera.rayTracer = rayTracer;
@@ -272,7 +274,9 @@ public class Camera implements Cloneable {
 	}
 
 	/**
+	 * renders the image by casting rays through all of the view plane pixels
 	 * 
+	 * @return the camera after the image has been updated
 	 */
 	public Camera renderImage() {
 		int nX = imageWriter.getNx();
@@ -285,10 +289,16 @@ public class Camera implements Cloneable {
 		return this;
 	}
 
+	/**
+	 * casts a ray through a view plane pixel
+	 * 
+	 * @param nX     - number of pixels in a row
+	 * @param nY     - number of pixels in a column
+	 * @param column - the current pixel's column
+	 * @param row    - the current pixel's row
+	 */
 	private void castRay(int nX, int nY, int column, int row) {
-		imageWriter.writePixel(row, column, this.rayTracer.traceRay(this.constructRay(nX, nY, column, row)));
-		
-		
+		imageWriter.writePixel(column, row, this.rayTracer.traceRay(this.constructRay(nX, nY, column, row)));
 	}
 
 	/**
@@ -296,10 +306,11 @@ public class Camera implements Cloneable {
 	 * 
 	 * @param interval - the interval by which the lines are chosen
 	 * @param color    - the color used for coloring the lines
+	 * @return camera  - returns the camera after the grid has been printed onto the image
 	 */
 	public Camera printGrid(int interval, Color color) {
-		for (int i = 0; i < 800; i++) {
-			for (int j = 0; j < 500; j++) {
+		for (int i = 0; i < imageWriter.getNy(); i++) {
+			for (int j = 0; j < imageWriter.getNx(); j++) {
 				if (i % interval == 0 || j % interval == 0)
 					imageWriter.writePixel(i, j, color);
 			}
