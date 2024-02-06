@@ -16,13 +16,14 @@ import renderer.Camera;
  */
 public class IntegrationUtil {
 	/**
-	 * finds the number of intersections of camera rays given the geometries, the number of x and y pixels
+	 * finds the number of intersections of camera rays given the geometries, the
+	 * number of x and y pixels
 	 *
 	 * @param expectedNum - the expected number of intersections with the geometry
-	 * @param camera - the camera
-	 * @param geo - the geometries used for the intersections
-	 * @param nX - number of pixels in a row
-	 * @param nY - number of pixels in a column
+	 * @param camera      - the camera
+	 * @param geo         - the geometries used for the intersections
+	 * @param nX          - number of pixels in a row
+	 * @param nY          - number of pixels in a column
 	 * @return the number of intersections with the geometries
 	 */
 	public static void assertIntersections(int expectedNum, Camera camera, Geometries geo, int nX, int nY, String arg) {
