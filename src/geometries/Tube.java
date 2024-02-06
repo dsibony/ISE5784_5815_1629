@@ -4,7 +4,6 @@
 package geometries;
 
 import java.util.List;
-
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -41,7 +40,7 @@ public class Tube extends RadialGeometry {
 	}
 
 	@Override
-	public List<Point> findIntersections(Ray ray) {
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		// TODO Auto-generated method stub
 		return null;
 	}

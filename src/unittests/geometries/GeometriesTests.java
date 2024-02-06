@@ -51,7 +51,7 @@ class GeometriesTests {
 
 		// TC14: All of the geometries get intersected by the ray
 		final var result14 = geoIntersected.findIntersections(new Ray(new Point(0.5, 0.5, -10), new Vector(0, 0, 1)));
-		assertEquals(3, result14.size(), "All of the geometries get intersected by the ray");
+		assertEquals(4, result14.size(), "All of the geometries get intersected by the ray");
 	}
 
 }

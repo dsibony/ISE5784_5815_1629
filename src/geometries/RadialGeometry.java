@@ -6,7 +6,7 @@ package geometries;
 /**
  * This class will serve as a basis for the geometric objects
  */
-public abstract class RadialGeometry implements Geometry {
+public abstract class RadialGeometry extends Geometry {
 	/** The radius of the RadialGeometry based objects */
 	protected final double radius;
 	

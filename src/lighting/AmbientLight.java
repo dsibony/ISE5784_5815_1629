@@ -9,8 +9,7 @@ import primitives.Double3;
 /**
  * AmbientLight class used for taking the ambient light into account when calculating the color of an object
  */
-public class AmbientLight {
-	private final Color intensity;
+public class AmbientLight extends Light {
 
 	/** no light */
 	public static final AmbientLight NONE = new AmbientLight(Color.BLACK, 0);
@@ -22,7 +21,7 @@ public class AmbientLight {
 	 * @param kA - the color
 	 */
 	public AmbientLight(Color iA, Double3 kA) {
-		intensity = iA.scale(kA);
+		super(iA.scale(kA));
 	}
 
 	/**
@@ -32,16 +31,7 @@ public class AmbientLight {
 	 * @param kA - the color
 	 */
 	public AmbientLight(Color iA, double kA) {
-		intensity = iA.scale(kA);
-	}
-
-	/**
-	 * getter for intensity
-	 * 
-	 * @return the intensity
-	 */
-	public Color getIntensity() {
-		return intensity;
+		super(iA.scale(kA));
 	}
 
 }

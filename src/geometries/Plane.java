@@ -13,7 +13,7 @@ import primitives.Vector;
  * This class will be used as a plane and will have more uses as other classes
  * extend it
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
 	private final Point q;
 	private final Vector normal;
 
@@ -64,7 +64,7 @@ public class Plane implements Geometry {
 	}
 
 	@Override
-	public List<Point> findIntersections(Ray ray) {
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		if (q.equals(ray.getHead()))
 			return null;
 
@@ -74,6 +74,6 @@ public class Plane implements Geometry {
 			return null;
 
 		double t = alignZero(nQMinusP0 / nv);
-		return t <= 0 ? null : List.of(ray.getPoint(t));
+		return t <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
 	}
 }

@@ -2,13 +2,12 @@ package geometries;
 
 import java.util.LinkedList;
 import java.util.List;
-import primitives.Point;
 import primitives.Ray;
 
 /**
  * Geometries class which is used for handling multiple geometries in the same class with the same methods
  */
-public class Geometries implements Intersectable {
+public class Geometries extends Intersectable {
 	private final List<Intersectable> geometries = new LinkedList<Intersectable>();
 
 	/**
@@ -34,15 +33,15 @@ public class Geometries implements Intersectable {
 	}
 
 	@Override
-	public List<Point> findIntersections(Ray ray) {
-		List<Point> intersections = null;
+	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+		List<GeoPoint> intersections = null;
 		for (Intersectable geom : geometries) {
-			var geoIntersections = geom.findIntersections(ray);
+			var geoIntersections = geom.findGeoIntersections(ray);
 			if (geoIntersections != null) {
 				if (intersections == null)
-					intersections = new LinkedList<Point>(geoIntersections);
+					intersections = new LinkedList<GeoPoint>(geoIntersections);
 				else
-					for (Point p : geoIntersections) {
+					for (GeoPoint p : geoIntersections) {
 						if (!intersections.contains(p))
 							intersections.add(p);
 					}
