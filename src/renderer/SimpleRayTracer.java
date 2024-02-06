@@ -1,12 +1,11 @@
 /**
  * 
  */
-package unittests.renderer;
+package renderer;
 
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
-import renderer.RayTracerBase;
 import scene.Scene;
 
 /**
@@ -27,12 +26,13 @@ public class SimpleRayTracer extends RayTracerBase {
 	public Color traceRay(Ray ray) {
 		var intersections = this.scene.geometries.findIntersections(ray);
 		if (intersections == null)
-			return null;
+			return this.scene.background;
 		return this.calcColor(ray.findClosestPoint(intersections));
 		
 	}
 	
 	/**
+	 * Calculates the color of a point based on the current scene
 	 * 
 	 * @param point - the point 
 	 * @return the color of the point

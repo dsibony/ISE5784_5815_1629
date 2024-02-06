@@ -13,6 +13,7 @@ import primitives.Vector;
  * This class will be used as a Tube, a geometric object
  */
 public class Tube extends RadialGeometry {
+	/** The ray of the tube */
 	protected final Ray mainRay;
 
 	/**

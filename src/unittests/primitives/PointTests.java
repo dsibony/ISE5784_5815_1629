@@ -20,7 +20,6 @@ class PointTests {
 	Point p1 = new Point(1, 2, 3);
 	Point p2 = new Point(2, 4, 6);
 	Point p3 = new Point(2, 4, 5);
-
 	Vector v1 = new Vector(1, 2, 3);
 	Vector v1Opposite = new Vector(-1, -2, -3);
 	
@@ -40,7 +39,8 @@ class PointTests {
 			out.println("ERROR: (point - itself) does not throw an exception");}, 
                 "ERROR: (point - itself) throws wrong exception");
             }
-     /*
+    
+	/**
 	 * Test method for {@link primitives.Point#add(primitives.Vector)}.
 	 */
 	@Test

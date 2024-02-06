@@ -22,6 +22,7 @@ class VectorTests {
 	Vector v2 = new Vector(-2, -4, -6);
 	Vector v3 = new Vector(0, 3, -2);
 	Vector v4 = new Vector(1, 2, 2);
+
 	/**
 	 * Delta value for accuracy when comparing the numbers of type 'double' in
 	 * assertEquals
@@ -29,7 +30,7 @@ class VectorTests {
 	private final double DELTA = 0.000001;
 
 	/**
-	 * Test method for {@link primitives.Vector#Vector(double d1, double d2...)}
+	 * Test method for the Vector constructor
 	 */
 	public void testConstructor() {
 		// ============ Equivalence Partitions Tests ==============

@@ -10,12 +10,14 @@ import primitives.Color;
 import renderer.ImageWriter;
 
 /**
- * 
+ * Tests the imageWriter class (for learning purposes)
  */
 class ImageWriterTest {
-
+	/**
+	 * Test method for imageWriter
+	 */
 	@Test
-	void test() {
+	void testImageWriter() {
 		// ============ Equivalence Partitions Tests ==============
 		// TC01: regular image
 		ImageWriter image = new ImageWriter("test", 800, 500);

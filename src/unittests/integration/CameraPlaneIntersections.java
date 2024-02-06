@@ -7,16 +7,17 @@ import org.junit.jupiter.api.Test;
 import static unittests.integration.IntegrationUtil.*;
 import geometries.*;
 import primitives.*;
-import renderer.Camera;
+import renderer.*;
+import scene.Scene;
 
 /**
- * 
+ * Integration tests between the plane intersections method and camera
  */
 class CameraPlaneIntersections {
 	/** Camera builder for the tests */
 	private final Camera.Builder cameraBuilder = Camera.getBuilder()
-			// .setRayTracer(new SimpleRayTracer(new Scene("Test")))
-			// .setImageWriter(new ImageWriter("Test", 1, 1))
+			.setRayTracer(new SimpleRayTracer(new Scene("Test")))
+			.setImageWriter(new ImageWriter("Test", 1, 1))
 			.setP0(Point.ZERO).setDirection(new Vector(0, 0, -1), new Vector(0, -1, 0)).setVpDistance(1);
 
 	/**

@@ -7,7 +7,10 @@ package geometries;
  * This class will serve as a basis for the geometric objects
  */
 public abstract class RadialGeometry implements Geometry {
+	/** The radius of the RadialGeometry based objects */
 	protected final double radius;
+	
+	/** The squared radius (used for calculation improvements) */
 	protected final double radiusSquared;
 
 	
