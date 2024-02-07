@@ -17,7 +17,7 @@ public class PointLight extends Light implements LightSource {
 	private double kC = 1;
 	private double kL = 0;
 	private double kQ = 0;
-	
+
 	/**
 	 * Constructor to initialize PointLight based object
 	 * 
@@ -64,12 +64,13 @@ public class PointLight extends Light implements LightSource {
 
 	@Override
 	public Color getIntensity(Point p) {
-		return this.intensity;
+		double d = p.distance(this.position);
+		return this.intensity.scale(1 / (this.kC + this.kL * d + this.kQ * d * d));
 	}
 
 	@Override
 	public Vector getL(Point p) {
-		return p.subtract(this.position);
+		return p.subtract(this.position).normalize();
 	}
 
 }
