@@ -70,7 +70,7 @@ public class Ray {
 	/**
 	 * this method finds the closest point to the ray's head
 	 * 
-	 * @param list - list of points
+	 * @param points - list of points
 	 * @return the closest point to the ray's head
 	 */
 	public Point findClosestPoint(List<Point> points) {
@@ -79,7 +79,10 @@ public class Ray {
 	}
 
 	/**
+	 * A method to find the closest GeoPoint out of a list
 	 * 
+	 * @param list - A list of GeoPoints
+	 * @return the closest point
 	 */
 	public GeoPoint findClosestGeoPoint(List<GeoPoint> list) {
 		if (list.isEmpty())

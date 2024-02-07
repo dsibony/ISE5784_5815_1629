@@ -3,13 +3,11 @@
  */
 package renderer;
 
-import primitives.Color;
-import primitives.Material;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
 import lighting.LightSource;
+import static primitives.Util.alignZero;
 
 /**
  * This class is used for tracing rays
@@ -38,10 +36,10 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * Calculates the color of a point based on the current scene
 	 * 
 	 * @param point - the point
-	 * @param direction - the direction
+	 * @param v - the direction
 	 * @return the color of the point
 	 */
-	private Color calcColor(GeoPoint geoPoint, Vector direction) {
+	private Color calcColor(GeoPoint geoPoint, Vector v) {
 		Color color = this.scene.ambientLight.getIntensity().add(geoPoint.geometry.getEmission());
 		for (LightSource light : this.scene.lights) {
 			Vector l = light.getL(geoPoint.point);
@@ -50,8 +48,10 @@ public class SimpleRayTracer extends RayTracerBase {
 			Color i = light.getIntensity(geoPoint.point);
 			Material m = geoPoint.geometry.getMaterial();
 			
-			color = color.add(i.scale(Math.abs(n.dotProduct(l))).scale(m.kD));
-			color = color.add(i.scale(Math.pow(Math.max(0, direction.scale(-1).dotProduct(r)), m.nShininess)).scale(m.kS));
+			if (alignZero((l.dotProduct(n))*(v.dotProduct(n))) > 0) {
+				color = color.add(i.scale(Math.abs(n.dotProduct(l))).scale(m.kD));
+				color = color.add(i.scale(Math.pow(Math.max(0, v.scale(-1).dotProduct(r)), m.nShininess)).scale(m.kS));
+			}
 		}
 		return color;
 	}

@@ -8,10 +8,10 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- * 
+ * A class representing a point light source
  */
 public class PointLight extends Light implements LightSource {
-	/** */
+	/** The position of the light */
 	protected Point position;
 
 	private double kC = 1;

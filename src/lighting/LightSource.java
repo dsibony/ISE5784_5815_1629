@@ -8,7 +8,7 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- * 
+ * A class which will help in representing different types of light sources
  */
 public interface LightSource {
 	/** 

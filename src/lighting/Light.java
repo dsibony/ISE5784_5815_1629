@@ -6,7 +6,7 @@ package lighting;
 import primitives.Color;
 
 /**
- * 
+ * An abstract class representing a general light source
  */
 abstract class Light {
 	/** The intensity of the light */

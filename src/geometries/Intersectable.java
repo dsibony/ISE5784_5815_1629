@@ -40,17 +40,20 @@ public abstract class Intersectable {
 	protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 
 	/**
-	 * 
+	 * A class representing a GeoPoint, which includes the geometry shape and the intersection point
 	 */
 	public static class GeoPoint {
-		/** */
+		/** The geometry shape */
 		public Geometry geometry;
 
-		/** */
+		/** The point on the geometry */
 		public Point point;
 
 		/**
+		 * Constructor to initialize GeoPoint based object
 		 * 
+		 * @param geometry - the geometry shape
+		 * @param point - the point on the geometry
 		 */
 		public GeoPoint(Geometry geometry, Point point) {
 			this.geometry = geometry;
