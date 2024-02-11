@@ -54,7 +54,7 @@ public class PointLight extends Light implements LightSource {
 	/**
 	 * setter for kQ
 	 * 
-	 * @param kQ the kQ to set
+	 * @param kQ - the kQ to set
 	 * @return PointLight after its been updated
 	 */
 	public PointLight setkQ(double kQ) {

@@ -33,7 +33,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
-	 * Calculates the color of a point based on the current scene
+	 * Calculates the color of a point based on the Phong model
 	 * 
 	 * @param point - the point
 	 * @param v - the direction
