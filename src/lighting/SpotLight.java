@@ -3,15 +3,14 @@
  */
 package lighting;
 
-import primitives.Color;
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
+import static primitives.Util.*;
 
 /**
  * A class representing a spot light source
  */
 public class SpotLight extends PointLight {
-	private Vector direction;
+	private final Vector direction;
 	private double narrowBeam = 1;
 
 	/**
@@ -27,29 +26,10 @@ public class SpotLight extends PointLight {
 	}
 
 	@Override
-	public SpotLight setkC(double kC) {
-		super.setkC(kC);
-		return this;
-	}
-
-	public SpotLight setkL(double kL) {
-		super.setkL(kL);
-		return this;
-	}
-
-	public SpotLight setkQ(double kQ) {
-		super.setkQ(kQ);
-		return this;
-	}
-
-	@Override
 	public Color getIntensity(Point p) {
-		return super.getIntensity(p).scale(Math.pow(Math.max(0, this.direction.dotProduct(this.getL(p))), narrowBeam));
-	}
-
-	@Override
-	public Vector getL(Point p) {
-		return super.getL(p);
+		var lDir = this.direction.dotProduct(this.getL(p));
+		return alignZero(lDir) <= 0 ? Color.BLACK //
+				: super.getIntensity(p).scale(Math.pow(lDir, narrowBeam));
 	}
 
 	/**

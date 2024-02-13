@@ -5,7 +5,8 @@ import java.util.List;
 import primitives.Ray;
 
 /**
- * Geometries class which is used for handling multiple geometries in the same class with the same methods
+ * Geometries class which is used for handling multiple geometries in the same
+ * class with the same methods
  */
 public class Geometries extends Intersectable {
 	private final List<Intersectable> geometries = new LinkedList<Intersectable>();
@@ -13,20 +14,23 @@ public class Geometries extends Intersectable {
 	/**
 	 * Empty default constructor
 	 */
-	public Geometries() {}
+	public Geometries() {
+	}
 
-	/** Constructor which adds the given geometries into the geometries list above
+	/**
+	 * Constructor which adds the given geometries into the geometries list above
 	 * 
 	 * @param geometries, given geometries for the list
 	 */
 	public Geometries(Intersectable... geometries) {
 		add(geometries);
 	}
-	
-/** Add geometries to the list of "geometries"
- * 
- * @param geometries - a list of intersectable geometries
- */
+
+	/**
+	 * Add geometries to the list of "geometries"
+	 * 
+	 * @param geometries - a list of intersectable geometries
+	 */
 	public void add(Intersectable... geometries) {
 		for (Intersectable geom : geometries)
 			this.geometries.add(geom);
@@ -41,10 +45,7 @@ public class Geometries extends Intersectable {
 				if (intersections == null)
 					intersections = new LinkedList<GeoPoint>(geoIntersections);
 				else
-					for (GeoPoint p : geoIntersections) {
-						if (!intersections.contains(p))
-							intersections.add(p);
-					}
+					intersections.addAll(geoIntersections);
 			}
 		}
 		return intersections;

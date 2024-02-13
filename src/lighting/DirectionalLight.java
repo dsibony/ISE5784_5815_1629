@@ -11,7 +11,7 @@ import primitives.Vector;
  * A class representing a directional light source
  */
 public class DirectionalLight extends Light implements LightSource {
-	private Vector direction;
+	private final Vector direction;
 
 	/**
 	 * Constructor to initialize DirectionalLight based object
@@ -33,5 +33,4 @@ public class DirectionalLight extends Light implements LightSource {
 	public Vector getL(Point p) {
 		return this.direction;
 	}
-
 }

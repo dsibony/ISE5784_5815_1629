@@ -3,8 +3,7 @@
  */
 package lighting;
 
-import primitives.Color;
-import primitives.Double3;
+import primitives.*;
 
 /**
  * AmbientLight class used for taking the ambient light into account when calculating the color of an object

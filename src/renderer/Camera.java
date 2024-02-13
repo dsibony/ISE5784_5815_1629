@@ -21,6 +21,7 @@ public class Camera implements Cloneable {
 	private double viewPlaneDistance = 0.0;
 	private ImageWriter imageWriter;
 	private RayTracerBase rayTracer;
+	private Point viewPlanePC;
 
 	/**
 	 * Empty default constructor
@@ -38,7 +39,6 @@ public class Camera implements Cloneable {
 		 * Default constructor
 		 */
 		public Builder() {
-
 		}
 
 		/**
@@ -140,8 +140,6 @@ public class Camera implements Cloneable {
 		public Camera build() {
 			String problemDesc = "Missing rendering data";
 			String problemLoc = "Camera";
-//			if (camera.imageWriter == null) throw new MissingResourceException(…);
-//			if (camera.rayTracer == null) throw new ... 
 			if (camera.p0 == null)
 				throw new MissingResourceException(problemDesc, problemLoc, "p0 is missing");
 			if (camera.vUp == null)
@@ -169,7 +167,7 @@ public class Camera implements Cloneable {
 			camera.vTo.normalize();
 			camera.vUp.normalize();
 			camera.vRight = camera.vTo.crossProduct(camera.vUp).normalize();
-//			camera.viewPlanePC = camera.p0.add(camera.vTo.scale(camera.viewPlaneDistance)); 
+			camera.viewPlanePC = camera.p0.add(camera.vTo.scale(camera.viewPlaneDistance));
 			try {
 				return (Camera) camera.clone();
 			} catch (CloneNotSupportedException ignore) {
@@ -184,7 +182,7 @@ public class Camera implements Cloneable {
 	 * @return p0
 	 */
 	public Point getP0() {
-		return p0;
+		return this.p0;
 	}
 
 	/**
@@ -193,7 +191,7 @@ public class Camera implements Cloneable {
 	 * @return the vRight
 	 */
 	public Vector getvRight() {
-		return vRight;
+		return this.vRight;
 	}
 
 	/**
@@ -202,7 +200,7 @@ public class Camera implements Cloneable {
 	 * @return the vUp
 	 */
 	public Vector getvUp() {
-		return vUp;
+		return this.vUp;
 	}
 
 	/**
@@ -211,7 +209,7 @@ public class Camera implements Cloneable {
 	 * @return the vTo
 	 */
 	public Vector getvTo() {
-		return vTo;
+		return this.vTo;
 	}
 
 	/**
@@ -220,7 +218,7 @@ public class Camera implements Cloneable {
 	 * @return the height
 	 */
 	public double getHeight() {
-		return viewPlaneHeight;
+		return this.viewPlaneHeight;
 	}
 
 	/**
@@ -229,7 +227,7 @@ public class Camera implements Cloneable {
 	 * @return the width
 	 */
 	public double getWidth() {
-		return viewPlaneWidth;
+		return this.viewPlaneWidth;
 	}
 
 	/**
@@ -238,7 +236,7 @@ public class Camera implements Cloneable {
 	 * @return the distance
 	 */
 	public double getDistance() {
-		return viewPlaneDistance;
+		return this.viewPlaneDistance;
 	}
 
 	/**
@@ -261,11 +259,12 @@ public class Camera implements Cloneable {
 	 * @return the ray from the camera to the center of a view plane pixel
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {
-		Point pIJ = p0.add(vTo.scale(viewPlaneDistance));
-		double rX = viewPlaneWidth / (double) nX;
-		double rY = viewPlaneHeight / (double) nY;
+		double rX = this.viewPlaneWidth / (double) nX;
+		double rY = this.viewPlaneHeight / (double) nY;
 		double xJ = rX * ((double) j - ((double) nX - 1) / 2);
 		double yI = rY * -((double) i - ((double) nY - 1) / 2);
+
+		Point pIJ = viewPlanePC;
 		if (!isZero(xJ))
 			pIJ = pIJ.add(vRight.scale(xJ));
 		if (!isZero(yI))
@@ -279,28 +278,28 @@ public class Camera implements Cloneable {
 	 * @return camera after the image has been updated
 	 */
 	public Camera renderImage() {
-		int nX = imageWriter.getNx();
-		int nY = imageWriter.getNy();
+		int nX = this.imageWriter.getNx();
+		int nY = this.imageWriter.getNy();
 		for (int i = 0; i < nY; i++) {
 			for (int j = 0; j < nX; j++) {
-				castRay(nX, nY, j, i);
+				this.castRay(nX, nY, j, i);
 			}
 		}
 		return this;
 	}
 
 	/**
-	 * Casts a ray through the middle of the pixel and matches the color to the intercepted object
+	 * Casts a ray through the middle of the pixel and matches the color to the
+	 * intercepted object
 	 * 
-	 * @param nX - number of pixels in a row
-	 * @param nY - number of pixels in a column
+	 * @param nX     - number of pixels in a row
+	 * @param nY     - number of pixels in a column
 	 * @param column - current pixel's column
-	 * @param row - current pixel's row
+	 * @param row    - current pixel's row
 	 */
 	private void castRay(int nX, int nY, int column, int row) {
-		imageWriter.writePixel(column, row, this.rayTracer.traceRay(this.constructRay(nX, nY, column, row)));
-		
-		
+		this.imageWriter.writePixel(column, row, //
+				this.rayTracer.traceRay(this.constructRay(nX, nY, column, row)));
 	}
 
 	/**
@@ -312,10 +311,12 @@ public class Camera implements Cloneable {
 	 * @return camera after the grid has been printed onto the image
 	 */
 	public Camera printGrid(int interval, Color color) {
-		for (int i = 0; i < imageWriter.getNy(); i++) {
-			for (int j = 0; j < imageWriter.getNx(); j++) {
+		int nX = this.imageWriter.getNx();
+		int nY = this.imageWriter.getNy();
+		for (int i = 0; i < nY; i++) {
+			for (int j = 0; j < nX; j++) {
 				if (i % interval == 0 || j % interval == 0)
-					imageWriter.writePixel(i, j, color);
+					this.imageWriter.writePixel(i, j, color);
 			}
 		}
 		return this;
@@ -326,6 +327,6 @@ public class Camera implements Cloneable {
 	 * pixel color matrix in the directory of the project
 	 */
 	public void writeToImage() {
-		imageWriter.writeToImage();
+		this.imageWriter.writeToImage();
 	}
 }

@@ -13,6 +13,8 @@ import static primitives.Util.alignZero;
  * This class is used for tracing rays
  */
 public class SimpleRayTracer extends RayTracerBase {
+	/** shading coefficient */
+	private static final double DELTA = 0.1;
 
 	/**
 	 * Constructor for SimpleRayTracer based object
@@ -26,9 +28,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	@Override
 	public Color traceRay(Ray ray) {
 		var intersections = this.scene.geometries.findGeoIntersections(ray);
-		if (intersections == null)
-			return this.scene.background;
-		return this.calcColor(ray.findClosestGeoPoint(intersections), ray.getDirection());
+		return intersections == null ? this.scene.background
+				: this.calcColor(ray.findClosestGeoPoint(intersections), ray);
 
 	}
 
@@ -36,24 +37,85 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * Calculates the color of a point based on the Phong model
 	 * 
 	 * @param point - the point
-	 * @param v - the direction
+	 * @param v     - the direction
 	 * @return the color of the point
 	 */
-	private Color calcColor(GeoPoint geoPoint, Vector v) {
-		Color color = this.scene.ambientLight.getIntensity().add(geoPoint.geometry.getEmission());
-		for (LightSource light : this.scene.lights) {
-			Vector l = light.getL(geoPoint.point);
-			Vector n = geoPoint.geometry.getNormal(geoPoint.point);
-			Vector r = l.subtract(n.scale(l.scale(2).dotProduct(n))).normalize();
-			Color i = light.getIntensity(geoPoint.point);
-			Material m = geoPoint.geometry.getMaterial();
-			
-			if (alignZero((l.dotProduct(n))*(v.dotProduct(n))) > 0) {
-				color = color.add(i.scale(Math.abs(n.dotProduct(l))).scale(m.kD));
-				color = color.add(i.scale(Math.pow(Math.max(0, v.scale(-1).dotProduct(r)), m.nShininess)).scale(m.kS));
+	private Color calcColor(GeoPoint geoPoint, Ray ray) {
+		return this.scene.ambientLight.getIntensity().add(calcLocalEffects(geoPoint, ray));
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @param gp
+	 * @param ray
+	 * @return
+	 */
+	private Color calcLocalEffects(GeoPoint gp, Ray ray) {
+		Vector n = gp.geometry.getNormal(gp.point);
+		Vector v = ray.getDirection();
+		double nv = alignZero(n.dotProduct(v));
+		if (nv == 0)
+			return Color.BLACK;
+		Material mat = gp.geometry.getMaterial();
+		Color color = gp.geometry.getEmission();
+		for (LightSource lightSource : scene.lights) {
+			Vector l = lightSource.getL(gp.point);
+			double nl = alignZero(n.dotProduct(l));
+			if ((nl * nv > 0)  && unshaded(gp, l)) { // sign(nl) == sign(nv)
+				Color iL = lightSource.getIntensity(gp.point);
+				color = color.add(iL.scale(calcDiffusive(mat, n, l, nl)))//
+						.add(iL.scale(calcSpecular(mat, n, l, v, nv)));
 			}
 		}
 		return color;
 	}
 
+	/**
+	 * TODO
+	 * 
+	 * @param mat
+	 * @param n
+	 * @param l
+	 * @param nl
+	 * @return
+	 */
+	private Double3 calcDiffusive(Material mat, Vector n, Vector l, double nl) {
+		double dp = alignZero(n.dotProduct(l));
+		return dp < 0 ? mat.kD.scale(dp * (-1)) : mat.kD.scale(dp);
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @param mat
+	 * @param n
+	 * @param l
+	 * @param v
+	 * @param nv
+	 * @return
+	 */
+	private Double3 calcSpecular(Material mat, Vector n, Vector l, Vector v, double nv) {
+		double dp = v.scale(-1).dotProduct(calcR(l, n));
+		return alignZero(dp) < 0 ? Double3.ZERO : mat.kS.scale(Math.pow(dp, mat.nShininess));
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @param l
+	 * @param n
+	 * @return
+	 */
+	private Vector calcR(Vector l, Vector n) {
+		return l.subtract(n.scale(l.scale(2).dotProduct(n))).normalize();
+	}
+
+	private boolean unshaded(GeoPoint gp, LightSource ls, Vector l, Vector n) {
+		Vector lightDirection = l.scale(-1);
+		Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
+		Point point = gp.point.add(delta);
+		Ray shadowRay = new Ray(point, lightDirection);
+		return true;
+	}
 }

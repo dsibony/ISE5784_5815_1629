@@ -12,7 +12,7 @@ import primitives.Vector;
  */
 public class PointLight extends Light implements LightSource {
 	/** The position of the light */
-	protected Point position;
+	protected final Point position;
 
 	private double kC = 1;
 	private double kL = 0;
