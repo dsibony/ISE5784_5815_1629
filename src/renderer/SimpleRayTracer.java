@@ -9,6 +9,8 @@ import geometries.Intersectable.GeoPoint;
 import lighting.LightSource;
 import static primitives.Util.alignZero;
 
+import java.util.List;
+
 /**
  * This class is used for tracing rays
  */
@@ -62,7 +64,7 @@ public class SimpleRayTracer extends RayTracerBase {
 		for (LightSource lightSource : scene.lights) {
 			Vector l = lightSource.getL(gp.point);
 			double nl = alignZero(n.dotProduct(l));
-			if ((nl * nv > 0)  && unshaded(gp, l)) { // sign(nl) == sign(nv)
+			if ((nl * nv > 0) && unshaded(gp, lightSource, l, n, nl)) { // sign(nl) == sign(nv)
 				Color iL = lightSource.getIntensity(gp.point);
 				color = color.add(iL.scale(calcDiffusive(mat, n, l, nl)))//
 						.add(iL.scale(calcSpecular(mat, n, l, v, nv)));
@@ -111,11 +113,28 @@ public class SimpleRayTracer extends RayTracerBase {
 		return l.subtract(n.scale(l.scale(2).dotProduct(n))).normalize();
 	}
 
-	private boolean unshaded(GeoPoint gp, LightSource ls, Vector l, Vector n) {
+	/**
+	 * TODO
+	 * 
+	 * @param gp
+	 * @param l
+	 * @param n
+	 * @return
+	 */
+	private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nl) {
 		Vector lightDirection = l.scale(-1);
-		Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
+
+		Vector delta = n.scale(nl < 0 ? DELTA : -DELTA);
 		Point point = gp.point.add(delta);
 		Ray shadowRay = new Ray(point, lightDirection);
+
+		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(shadowRay);
+		if (intersections == null)
+			return true;
+		double distance = light.getDistance(point);
+		for (GeoPoint intersection : intersections)
+			if (point.distance(intersection.point) < distance)
+				return false;
 		return true;
 	}
 }
