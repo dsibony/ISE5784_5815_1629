@@ -12,6 +12,9 @@ import geometries.Intersectable.GeoPoint;
  * Ray is used for some geometric objects
  */
 public class Ray {
+	/** Tolerance value for ray-surface intersection calculations */
+	private static final double DELTA = 0.1;
+	
 	private final Point head;
 	private final Vector direction;
 
@@ -23,17 +26,34 @@ public class Ray {
 	 * @param v - vector of ray direction
 	 */
 	public Ray(Point h, Vector v) {
-		head = h;
-		direction = v.normalize();
+		this.head = h;
+		this.direction = v.normalize();
 	}
-
+	/**
+	 * secondary rays constructor
+	 * 
+	 * @param head
+	 * @param direction
+	 * @param normal
+	 */
+	public Ray(Point head, Vector direction, Vector normal) {
+		double vn = direction.dotProduct(normal);
+		if (vn > 0)
+			this.head = head.add(normal.scale(DELTA));
+		else if (vn < 0)
+			this.head = head.add(normal.scale(DELTA*-1));
+		else
+			this.head = head;
+		this.direction = direction;
+	}
+	
 	/**
 	 * getter for head
 	 * 
 	 * @return head
 	 */
 	public Point getHead() {
-		return head;
+		return this.head;
 	}
 
 	/**
@@ -42,19 +62,19 @@ public class Ray {
 	 * @return direction
 	 */
 	public Vector getDirection() {
-		return direction;
+		return this.direction;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		return (obj instanceof Ray other) && direction.equals(other.direction) && head.equals(other.head);
+		return (obj instanceof Ray other) && this.direction.equals(other.direction) && this.head.equals(other.head);
 	}
 
 	@Override
 	public String toString() {
-		return "Ray:" + head + "->" + direction;
+		return "Ray:" + this.head + "->" + this.direction;
 	}
 
 	/**
@@ -64,7 +84,7 @@ public class Ray {
 	 * @return the point
 	 */
 	public Point getPoint(double t) {
-		return isZero(t) ? head : this.head.add(this.direction.scale(t));
+		return isZero(t) ? this.head : this.head.add(this.direction.scale(t));
 	}
 
 	/**

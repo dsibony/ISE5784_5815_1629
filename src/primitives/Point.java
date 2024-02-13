@@ -12,6 +12,7 @@ public class Point {
 	/** x, y, z coordinates */
 	protected final Double3 coordinates;
 
+
 	/**
 	 * Constructor to initialize Point based object with its three number values
 	 * 
@@ -28,7 +29,7 @@ public class Point {
 	 * 
 	 * @param xyz - the only Double3 value needed for the Point
 	 */
-	Point(Double3 xyz) {
+	public Point(Double3 xyz) {
 		coordinates = xyz;
 	}
 
@@ -45,6 +46,15 @@ public class Point {
 		return "Point:" + coordinates;
 	}
 
+	/**
+	 * getter for coordinates
+	 * 
+	 * @return coordinates
+	 */
+	public Double3 getCoordinates() {
+		return coordinates;
+	}
+	
 	/**
 	 * Subtract between two points resulting in a vector
 	 * 
