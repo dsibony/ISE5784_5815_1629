@@ -14,7 +14,7 @@ import geometries.Intersectable.GeoPoint;
 public class Ray {
 	/** Tolerance value for ray-surface intersection calculations */
 	private static final double DELTA = 0.1;
-	
+
 	private final Point head;
 	private final Vector direction;
 
@@ -29,24 +29,21 @@ public class Ray {
 		this.head = h;
 		this.direction = v.normalize();
 	}
+
 	/**
 	 * secondary rays constructor
 	 * 
-	 * @param head
-	 * @param direction
-	 * @param normal
+	 * @param head      - the head of the ray
+	 * @param direction - the direction vector
+	 * @param normal    - the normal to the object the point is on
 	 */
 	public Ray(Point head, Vector direction, Vector normal) {
 		double vn = direction.dotProduct(normal);
-		if (vn > 0)
-			this.head = head.add(normal.scale(DELTA));
-		else if (vn < 0)
-			this.head = head.add(normal.scale(DELTA*-1));
-		else
-			this.head = head;
+		this.head = vn > 0 ? head.add(normal.scale(DELTA)) : //
+			vn < 0 ? head.add(normal.scale(DELTA * -1)) : head;
 		this.direction = direction;
 	}
-	
+
 	/**
 	 * getter for head
 	 * 

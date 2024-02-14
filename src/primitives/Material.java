@@ -1,4 +1,4 @@
-/**
+/**shininess of the material
  * 
  */
 package primitives;
@@ -19,11 +19,11 @@ public class Material {
 	/** The reflection coefficient */
 	public Double3 kR = Double3.ZERO;
 	
-	/** The shininess of the material */
+	/** The  */
 	public int nShininess = 0;
 
 	/**
-	 * setter for kD (Double3)
+	 * setter for the diffuse reflection coefficient (Double3)
 	 * 
 	 * @param kD the kD to set
 	 * @return the material after its been updated
@@ -35,9 +35,9 @@ public class Material {
 
 
 	/**
-	 * setter for kS (double)
+	 * setter for the diffuse reflection coefficient (double)
 	 * 
-	 * @param kD the kD to set
+	 * @param kD - the kD to set
 	 * @return the material after its been updated
 	 */
 	public Material setKd(double kD) {
@@ -46,9 +46,9 @@ public class Material {
 	}
 	
 	/**
-	 * setter for kS (Double3)
+	 * setter for the specular reflection coefficient (Double3)
 	 * 
-	 * @param kS the kS to set
+	 * @param kS - the kS to set
 	 * @return the material after its been updated
 	 */
 	public Material setKs(Double3 kS) {
@@ -57,7 +57,7 @@ public class Material {
 	}
 
 	/**
-	 * setter for kS (double)
+	 * setter for the specular reflection coefficient (double)
 	 * 
 	 * @param kS the kS to set
 	 * @return the material after its been updated
@@ -68,7 +68,7 @@ public class Material {
 	}
 
 	/**
-	 * setter for kT (Double3)
+	 * setter for the transparency coefficient (Double3)
 	 * 
 	 * @param kT - the new kT value
 	 * @return the material after its been updated
@@ -79,7 +79,7 @@ public class Material {
 	}
 
 	/**
-	 * setter for kT (double)
+	 * setter for the transparency coefficient (double)
 	 * 
 	 * @param kT - the new kT value
 	 * @return the material after its been updated
@@ -90,7 +90,7 @@ public class Material {
 	}
 	
 	/**
-	 * setter for kR (Double3)
+	 * setter for the reflection coefficient (Double3)
 	 * 
 	 * @param kR - the new kR value
 	 * @return the material after its been updated
@@ -101,7 +101,7 @@ public class Material {
 	}
 	
 	/**
-	 * setter for kR (double)
+	 * setter for the reflection coefficient (double)
 	 * 
 	 * @param kR - the new kR value
 	 * @return the material after its been updated
@@ -112,9 +112,9 @@ public class Material {
 	}
 
 	/**
-	 * setter for nShininess
+	 * setter for the shininess of the material
 	 * 
-	 * @param nShininess the nShininess to set
+	 * @param nShininess - the nShininess to set
 	 * @return the material after its been updated
 	 */
 	public Material setShininess(int nShininess) {
