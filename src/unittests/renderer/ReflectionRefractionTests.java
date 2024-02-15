@@ -118,7 +118,7 @@ public class ReflectionRefractionTests {
 	 * Produce a complicated picture of spheres lighted by a spot light (Bonus)
 	 */
 	@Test
-	public void threeObjectsPicture() {
+	public void complicateObjectsPicture() {
 		scene.geometries.add(
 				new Sphere(new Point(0, 0, -50), 50d).setEmission(new Color(GRAY))
 						.setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKt(0.35)),
