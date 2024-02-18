@@ -31,7 +31,7 @@ public class Ray {
 	}
 
 	/**
-	 * Constructs a Ray based on an object after it intersects with it
+	 * Constructs a Ray from the surface of an object
 	 * 
 	 * @param head      - the head of the ray
 	 * @param direction - the direction vector
