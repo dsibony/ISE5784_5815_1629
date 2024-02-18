@@ -37,8 +37,13 @@ public class ReflectionRefractionTests {
 		scene.lights.add(new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2))
 				.setKl(0.0004).setKq(0.0000006));
 
-		cameraBuilder.setP0(new Point(0, 0, 1000)).setVpDistance(1000).setVpSize(150, 150)
-				.setImageWriter(new ImageWriter("refractionTwoSpheres", 500, 500)).build().renderImage().writeToImage();
+		cameraBuilder.setP0(new Point(0, 0, 1000)) //
+				.setVpDistance(1000) //
+				.setVpSize(150, 150) //
+				.setImageWriter(new ImageWriter("refractionTwoSpheres", 500, 500)) //
+				.build() //
+				.renderImage() //
+				.writeToImage();
 	}
 
 	/** Produce a picture of a sphere lighted by a spot light */

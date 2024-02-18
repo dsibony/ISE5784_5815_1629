@@ -133,8 +133,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the closest intersection GeoPoint or null if no intersection is found
 	 */
 	private GeoPoint findClosestIntersection(Ray ray) {
-		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
-		return ray.findClosestGeoPoint(intersections);
+		return ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
 	}
 
 	/**
@@ -159,9 +158,8 @@ public class SimpleRayTracer extends RayTracerBase {
 			if ((nl * nv > 0)) { // sign(nl) == sign(nv)
 				Double3 ktr = transparency(gp, lightSource, l, n);
 				if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
-					Color iL = lightSource.getIntensity(new Point(gp.point.getCoordinates().product(ktr)));
-					color = color.add(iL.scale(calcDiffusive(mat, n, l, nl)))//
-							.add(iL.scale(calcSpecular(mat, n, l, v, nv)));
+					Color iL = lightSource.getIntensity(gp.point).scale(ktr);
+					color = color.add(iL.scale(calcDiffusive(mat, n, l, nl).add(calcSpecular(mat, n, l, v, nv))));
 				}
 			}
 		}
@@ -179,7 +177,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 */
 	private Double3 calcDiffusive(Material mat, Vector n, Vector l, double nl) {
 		double dp = alignZero(n.dotProduct(l));
-		return dp < 0 ? mat.kD.scale(dp * (-1)) : mat.kD.scale(dp);
+		return mat.kD.scale(dp < 0 ? -dp : dp);
 	}
 
 	/**
@@ -193,19 +191,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the specular effects
 	 */
 	private Double3 calcSpecular(Material mat, Vector n, Vector l, Vector v, double nv) {
-		double dp = v.scale(-1).dotProduct(calcR(l, n));
+		double dp = v.scale(-1).dotProduct(l.subtract(n.scale(l.scale(2).dotProduct(n))).normalize());
 		return alignZero(dp) < 0 ? Double3.ZERO : mat.kS.scale(Math.pow(dp, mat.nShininess));
-	}
-
-	/**
-	 * this method calculates the reflected vector
-	 * 
-	 * @param l - the vector from the light pointing to the object
-	 * @param n - the normal to the object
-	 * @return the reflection vector
-	 */
-	private Vector calcR(Vector l, Vector n) {
-		return l.subtract(n.scale(l.scale(2).dotProduct(n))).normalize();
 	}
 
 	/**
@@ -219,17 +206,16 @@ public class SimpleRayTracer extends RayTracerBase {
 	private Double3 transparency(GeoPoint gp, LightSource light, Vector l, Vector n) {
 		Vector lightDirection = l.scale(-1);
 
-		Point point = gp.point;
-		Ray shadowRay = new Ray(point, lightDirection, n);
+		Ray shadowRay = new Ray(gp.point, lightDirection, n);
 		Double3 ktr = Double3.ONE;
 
 		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(shadowRay);
 		if (intersections == null)
 			return ktr;
 
-		double distance = light.getDistance(point);
+		double distance = light.getDistance(gp.point);
 		for (GeoPoint intersection : intersections)
-			if (point.distance(intersection.point) < distance)
+			if (alignZero(gp.point.distance(intersection.point) - distance) < 0)
 				ktr = ktr.product(intersection.geometry.getMaterial().kT);
 		return ktr;
 	}

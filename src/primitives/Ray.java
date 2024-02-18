@@ -31,7 +31,7 @@ public class Ray {
 	}
 
 	/**
-	 * secondary rays constructor
+	 * Constructor to 
 	 * 
 	 * @param head      - the head of the ray
 	 * @param direction - the direction vector
@@ -39,9 +39,8 @@ public class Ray {
 	 */
 	public Ray(Point head, Vector direction, Vector normal) {
 		double vn = direction.dotProduct(normal);
-		this.head = vn > 0 ? head.add(normal.scale(DELTA)) : //
-			vn < 0 ? head.add(normal.scale(DELTA * -1)) : head;
-		this.direction = direction;
+		this.head = head.add(normal.scale(vn < 0 ? -DELTA : DELTA));
+		this.direction = direction.normalize();
 	}
 
 	/**

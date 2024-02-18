@@ -14,7 +14,7 @@ public abstract class Intersectable {
 	 * @param ray - a given ray
 	 * @return a list of all the intersection points
 	 */
-	public List<Point> findIntersections(Ray ray) {
+	public final List<Point> findIntersections(Ray ray) {
 		 var geoList = findGeoIntersections(ray);
 		 return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
 		}
@@ -27,7 +27,7 @@ public abstract class Intersectable {
 	 * @param ray - a given ray
 	 * @return a list of all the intersection GeoPoints
 	 */
-	public List<GeoPoint> findGeoIntersections(Ray ray) {
+	public final List<GeoPoint> findGeoIntersections(Ray ray) {
 		return findGeoIntersectionsHelper(ray);
 	}
 	

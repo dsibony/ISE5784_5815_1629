@@ -45,15 +45,6 @@ public class Point {
 	public String toString() {
 		return "Point:" + coordinates;
 	}
-
-	/**
-	 * getter for coordinates
-	 * 
-	 * @return coordinates
-	 */
-	public Double3 getCoordinates() {
-		return coordinates;
-	}
 	
 	/**
 	 * Subtract between two points resulting in a vector
