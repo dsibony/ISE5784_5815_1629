@@ -31,11 +31,11 @@ public class Ray {
 	}
 
 	/**
-	 * Constructor to 
+	 * Constructs a Ray based on an object after it intersects with it
 	 * 
 	 * @param head      - the head of the ray
 	 * @param direction - the direction vector
-	 * @param normal    - the normal to the object the point is on
+	 * @param normal    - the normal of the object to avoid self intersection
 	 */
 	public Ray(Point head, Vector direction, Vector normal) {
 		double vn = direction.dotProduct(normal);

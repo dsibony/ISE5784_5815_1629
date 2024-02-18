@@ -122,8 +122,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the reflected ray
 	 */
 	private Ray constructReflectedRay(GeoPoint gp, Ray ray, Vector n) {
-		Vector v = ray.getDirection();
-		return new Ray(gp.point, v.subtract(n.scale(2 * v.dotProduct(n))).normalize(), n);
+		return new Ray(gp.point, calcR(ray.getDirection(), n), n);
 	}
 
 	/**
@@ -191,8 +190,19 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the specular effects
 	 */
 	private Double3 calcSpecular(Material mat, Vector n, Vector l, Vector v, double nv) {
-		double dp = v.scale(-1).dotProduct(l.subtract(n.scale(l.scale(2).dotProduct(n))).normalize());
+		double dp = v.scale(-1).dotProduct(calcR(l,n));
 		return alignZero(dp) < 0 ? Double3.ZERO : mat.kS.scale(Math.pow(dp, mat.nShininess));
+	}
+
+	/**
+	 * this method calculates the reflectance vector
+	 * 
+	 * @param v - the direction of the original ray
+	 * @param n - the normal of the objected from which the ray is reflected
+	 * @return the reflected vector
+	 */
+	private Vector calcR(Vector v, Vector n) {
+	return v.subtract(n.scale(2*(v.dotProduct(n)))).normalize();
 	}
 
 	/**
