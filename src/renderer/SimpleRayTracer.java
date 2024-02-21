@@ -212,6 +212,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	}
 
 	/**
+	 * this method calculate
 	 * 
 	 * @param gp    - the geo point
 	 * @param light - the light source
