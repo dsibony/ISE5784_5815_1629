@@ -155,7 +155,7 @@ public class SimpleRayTracer extends RayTracerBase {
 			Vector l = lightSource.getL(gp.point);
 			double nl = alignZero(n.dotProduct(l));
 			if ((nl * nv > 0)) { // sign(nl) == sign(nv)
-				Double3 ktr = transparency(gp, lightSource, l, n);
+				Double3 ktr = calcKtr(gp, lightSource, l, n);
 				if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
 					Color iL = lightSource.getIntensity(gp.point).scale(ktr);
 					color = color.add(iL.scale(calcDiffusive(mat, n, l, nl).add(calcSpecular(mat, n, l, v, nv))));
@@ -204,6 +204,12 @@ public class SimpleRayTracer extends RayTracerBase {
 	private Vector calcR(Vector v, Vector n) {
 	return v.subtract(n.scale(2*(v.dotProduct(n)))).normalize();
 	}
+	
+	protected Double3 calcKtr(GeoPoint gp, LightSource light, Vector l, Vector n) {
+		Vector lightDirection = l.scale(-1);
+		Ray shadowRay = new Ray(gp.point, lightDirection, n);
+		return transparency(gp, light, shadowRay);
+	}
 
 	/**
 	 * 
@@ -213,10 +219,8 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @param n     - the normal to the object
 	 * @return
 	 */
-	private Double3 transparency(GeoPoint gp, LightSource light, Vector l, Vector n) {
-		Vector lightDirection = l.scale(-1);
-
-		Ray shadowRay = new Ray(gp.point, lightDirection, n);
+	protected Double3 transparency(GeoPoint gp, LightSource light, Ray shadowRay) {
+		
 		Double3 ktr = Double3.ONE;
 
 		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(shadowRay);
