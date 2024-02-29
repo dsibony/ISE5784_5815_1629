@@ -50,7 +50,7 @@ public class Sphere extends RadialGeometry {
 			// since t2>t1 - both the points are behind the head of the ray
 			return null;
 		double t1 = alignZero(tm - th);
-		return t1 < 0 ? List.of(new GeoPoint(this, ray.getPoint(t2)))
+		return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2)))
 				: List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));
 	}
 }

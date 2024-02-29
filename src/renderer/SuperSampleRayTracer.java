@@ -12,15 +12,21 @@ import scene.Scene;
 import static primitives.Util.*;
 
 /**
- * 
+ * A class to implement super sampling in the ray tracer
  */
 public class SuperSampleRayTracer extends SimpleRayTracer {
 	private Blackboard board;
-	final private int shadowRaysNum;
+	private final int sqrtShadowRaysNum;
 
+	/**
+	 * Constructor to initialize the ray tracer
+	 * 
+	 * @param scene - the scene object used to initialize the scene field
+	 * @param shadowRaysNum - the amount of shadow rays (for soft shadowing)
+	 */
 	public SuperSampleRayTracer(Scene scene, int shadowRaysNum) {
 		super(scene);
-		this.shadowRaysNum = shadowRaysNum;
+		this.sqrtShadowRaysNum = (int) Math.sqrt(shadowRaysNum);
 	}
 
 	@Override
@@ -31,8 +37,8 @@ public class SuperSampleRayTracer extends SimpleRayTracer {
 			return transparency(gp, light, new Ray(gp.point, l.scale(-1)));
 		}
 
-		board = new Blackboard(light, l);
-		List<Point> shadowPoints = board.getShadowPoints(light, l, shadowRaysNum);
+		board = new Blackboard(light, l, this.sqrtShadowRaysNum);
+		List<Point> shadowPoints = board.createGrid();
 
 		for (Point shadowPoint : shadowPoints) {
 			avgKtr = avgKtr.add(transparency(gp, light, new Ray(gp.point, shadowPoint.subtract(gp.point), n)));
