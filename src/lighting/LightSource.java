@@ -35,4 +35,17 @@ public interface LightSource {
 	 */
 	public double getDistance(Point p);
 	
+	/**
+	 * getter for radius
+	 * 
+	 * @return the radius
+	 */
+	public double getRadius();
+	
+	/**
+	 * getter for the position
+	 * 
+	 * @return the position
+	 */
+	public Point getPosition();
 }

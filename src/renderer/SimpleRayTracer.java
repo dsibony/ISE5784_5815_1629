@@ -190,7 +190,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the specular effects
 	 */
 	private Double3 calcSpecular(Material mat, Vector n, Vector l, Vector v, double nv) {
-		double dp = v.scale(-1).dotProduct(calcR(l,n));
+		double dp = v.scale(-1).dotProduct(calcR(l, n));
 		return alignZero(dp) < 0 ? Double3.ZERO : mat.kS.scale(Math.pow(dp, mat.nShininess));
 	}
 
@@ -202,13 +202,19 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return the reflected vector
 	 */
 	private Vector calcR(Vector v, Vector n) {
-	return v.subtract(n.scale(2*(v.dotProduct(n)))).normalize();
+		return v.subtract(n.scale(2 * (v.dotProduct(n)))).normalize();
 	}
-	
+
+	/**
+	 * 
+	 * @param gp
+	 * @param light
+	 * @param l
+	 * @param n
+	 * @return
+	 */
 	protected Double3 calcKtr(GeoPoint gp, LightSource light, Vector l, Vector n) {
-		Vector lightDirection = l.scale(-1);
-		Ray shadowRay = new Ray(gp.point, lightDirection, n);
-		return transparency(gp, light, shadowRay);
+		return transparency(gp, light, new Ray(gp.point, l.scale(-1), n));
 	}
 
 	/**
@@ -221,7 +227,7 @@ public class SimpleRayTracer extends RayTracerBase {
 	 * @return
 	 */
 	protected Double3 transparency(GeoPoint gp, LightSource light, Ray shadowRay) {
-		
+
 		Double3 ktr = Double3.ONE;
 
 		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(shadowRay);
