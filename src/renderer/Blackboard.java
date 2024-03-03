@@ -5,7 +5,7 @@ package renderer;
 
 import static primitives.Util.*;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import lighting.LightSource;
@@ -18,7 +18,6 @@ public class Blackboard {
 	private final Point p0;
 	private final Vector vRight;
 	private final Vector vUp;
-	private final Vector vTo;
 	private final LightSource light;
 	private final double radius;
 	private final int sqrtShadowRaysNum;
@@ -35,14 +34,8 @@ public class Blackboard {
 		this.p0 = light.getPosition();
 		this.radius = light.getRadius();
 		this.sqrtShadowRaysNum = sqrtShadowRaysNum;
-		this.vTo = l;
-		this.vUp = (this.p0.subtract(new Point(this.p0.getD1() + 1, this.p0.getD2() + 1, //
-				isZero(this.vTo.getD3()) ? 1 : //
-						-(this.vTo.getD1() * (this.p0.getD1() + 1) + this.vTo.getD2() * (this.p0.getD2() + 1) //
-						-(this.vTo.getD1() * this.p0.getD1() + this.vTo.getD2() * this.p0.getD2() + this.vTo.getD3() * this.p0.getD3())) //
-						/ this.vTo.getD3())))
-						.normalize();
-		this.vRight = this.vUp.crossProduct(this.vTo).normalize();
+		this.vUp = new Ray(p0,l).orthogonal();
+		this.vRight = this.vUp.crossProduct(l).normalize();
 	}
 
 	/**
@@ -57,11 +50,16 @@ public class Blackboard {
 		double xJ = r * ((double) j - ((double) this.sqrtShadowRaysNum - 1) / 2);
 		double yI = r * -((double) i - ((double) this.sqrtShadowRaysNum - 1) / 2);
 
+		
 		Point pIJ = this.p0;
 		if (!isZero(xJ))
 			pIJ = pIJ.add(this.vRight.scale(xJ));
 		if (!isZero(yI))
 			pIJ = pIJ.add(this.vUp.scale(yI));
+		double moveX = random(-0.5 * r, 0.5 * r);
+        double moveY = random(-0.5 * r, 0.5 * r);
+        pIJ = pIJ.add(vRight.scale(moveX));
+        pIJ = pIJ.add(vUp.scale(moveY));
 		return (alignZero(this.radius - this.light.getDistance(pIJ)) > 0 ? pIJ : null);
 	}
 
@@ -71,7 +69,7 @@ public class Blackboard {
 	 * @return the list of the grid points
 	 */
 	public List<Point> createGrid() {
-		List<Point> list = new ArrayList<Point>();
+		List<Point> list = new LinkedList<Point>();
 		for (int i = 0; i < this.sqrtShadowRaysNum; i++) {
 			for (int j = 0; j < this.sqrtShadowRaysNum; j++) {
 				Point p = constructPoint(j, i);

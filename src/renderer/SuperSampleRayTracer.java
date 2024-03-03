@@ -15,7 +15,6 @@ import static primitives.Util.*;
  * A class to implement super sampling in the ray tracer
  */
 public class SuperSampleRayTracer extends SimpleRayTracer {
-	private Blackboard board;
 	private final int sqrtShadowRaysNum;
 
 	/**
@@ -34,11 +33,10 @@ public class SuperSampleRayTracer extends SimpleRayTracer {
 		Double3 avgKtr = Double3.ZERO;
 
 		if (isZero(light.getRadius())) {
-			return transparency(gp, light, new Ray(gp.point, l.scale(-1)));
+			return transparency(gp, light, new Ray(gp.point, l.scale(-1), n));
 		}
 
-		board = new Blackboard(light, l, this.sqrtShadowRaysNum);
-		List<Point> shadowPoints = board.createGrid();
+		List<Point> shadowPoints = new Blackboard(light, l, this.sqrtShadowRaysNum).createGrid();
 
 		for (Point shadowPoint : shadowPoints) {
 			avgKtr = avgKtr.add(transparency(gp, light, new Ray(gp.point, shadowPoint.subtract(gp.point), n)));

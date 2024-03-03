@@ -18,7 +18,7 @@ public class PointLight extends Light implements LightSource {
 	private double kL = 0;
 	private double kQ = 0;
 	
-	private double radius = 1;
+	private double radius = 0;
 
 	/**
 	 * Constructor to initialize PointLight based object

@@ -47,33 +47,6 @@ public class Point {
 	}
 	
 	/**
-	 * getter for d1
-	 * 
-	 * @return the d1
-	 */
-	public double getD1() {
-		return coordinates.d1;
-	}
-	
-	/**
-	 * getter for d2
-	 * 
-	 * @return the d2
-	 */
-	public double getD2() {
-		return coordinates.d2;
-	}
-	
-	/**
-	 * getter for d3
-	 * 
-	 * @return the d3
-	 */
-	public double getD3() {
-		return coordinates.d3;
-	}
-	
-	/**
 	 * Subtract between two points resulting in a vector
 	 * 
 	 * @param p2 point two, to find the vector that is the result of the subtraction between 2 points 

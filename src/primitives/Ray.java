@@ -115,4 +115,23 @@ public class Ray {
 		}
 		return closestPoint;
 	}
+	
+
+	/**
+	 * A method to calculate the orthogonal vector to the current vector
+	 * 
+	 * @param p0 - the starting point of the vector
+	 * @return the orthogonal vector
+	 */
+	public Vector orthogonal() {
+		return (this.head.subtract(new Point(this.head.coordinates.d1 + 1, this.head.coordinates.d2 + 1,
+				isZero(this.direction.coordinates.d3) ? 1
+						: -(this.direction.coordinates.d1 * (this.head.coordinates.d1 + 1)
+								+ this.direction.coordinates.d2 * (this.head.coordinates.d2 + 1)
+								- (this.direction.coordinates.d1 * this.head.coordinates.d1 + this.direction.coordinates.d2 * this.head.coordinates.d2
+										+ this.direction.coordinates.d3 * this.head.coordinates.d3))
+								/ this.direction.coordinates.d3)))
+				.normalize();
+	}
+
 }
