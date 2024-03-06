@@ -3,6 +3,8 @@
  */
 package primitives;
 
+import java.util.List;
+
 /**
  * This class will serve all classes who use vectors extends the Point class
  */
@@ -58,7 +60,7 @@ public class Vector extends Point {
 	}
 
 	/**
-	 * Scale the vector by a scalar
+	 * Scales the vector by a scalar
 	 * 
 	 * @param rhs right hand side scalar, used to scale the vector
 	 * @return the vector scaled by rhs
@@ -120,5 +122,17 @@ public class Vector extends Point {
 	 */
 	public Vector normalize() {
 		return this.scale(1 / this.length());
+	}
+
+	/**
+	 * Reduces the vector by a vector
+	 * 
+	 * @param direction - the direction of the vector to reduce with
+	 * @return the reduced vector
+	 */
+	public List<Double> reduce(Vector direction) {
+		return List.of(this.coordinates.d1 / direction.coordinates.d1, //
+					   this.coordinates.d2 / direction.coordinates.d2, //
+					   this.coordinates.d3 / direction.coordinates.d3);
 	}
 }

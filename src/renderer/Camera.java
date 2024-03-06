@@ -4,8 +4,10 @@
 package renderer;
 
 import primitives.*;
-import static primitives.Util.*;
+import renderer.PixelManager.Pixel;
 
+import static primitives.Util.*;
+import java.util.LinkedList;
 import java.util.MissingResourceException;
 
 /**
@@ -22,6 +24,18 @@ public class Camera implements Cloneable {
 	private ImageWriter imageWriter;
 	private RayTracerBase rayTracer;
 	private Point viewPlanePC;
+	private int threadsCount = 0;
+	private final int SPARE_THREADS = 2;
+	private double printInterval = 0;
+
+	/**
+	 * Pixel manager for supporting:
+	 * <ul>
+	 * <li>multi-threading</li>
+	 * <li>debug print of progress percentage in Console window/tab</li>
+	 * <ul>
+	 */
+	private PixelManager pixelManager;
 
 	/**
 	 * Empty default constructor
@@ -174,6 +188,23 @@ public class Camera implements Cloneable {
 				return null;
 			}
 		}
+
+		public Builder setMultithreading(int threads) {
+			if (threads < -2)
+				throw new IllegalArgumentException("Multithreading must be -2 or higher");
+			if (threads >= -1)
+				this.camera.threadsCount = threads;
+			else {
+				int cores = Runtime.getRuntime().availableProcessors() - this.camera.SPARE_THREADS;
+				this.camera.threadsCount = cores <= 2 ? 1 : cores;
+			}
+			return this;
+		}
+
+		public Builder setDebugPrint(double interval) {
+			this.camera.printInterval = interval;
+			return this;
+		}
 	}
 
 	/**
@@ -273,33 +304,55 @@ public class Camera implements Cloneable {
 	}
 
 	/**
-	 * renders image by casting rays through the view plane pixels
+	 * This function renders image's pixel color map from the scene included in the
+	 * ray tracer object
 	 * 
-	 * @return camera after the image has been updated
+	 * @return the camera object itself
 	 */
 	public Camera renderImage() {
 		int nX = this.imageWriter.getNx();
 		int nY = this.imageWriter.getNy();
-		for (int i = 0; i < nY; i++) {
-			for (int j = 0; j < nX; j++) {
-				this.castRay(nX, nY, j, i);
+		pixelManager = new PixelManager(nY, nX, printInterval);
+		if (threadsCount == 0) {
+			for (int i = 0; i < nY; i++) {
+				for (int j = 0; j < nX; j++) {
+					this.castRay(nX, nY, j, i);
+				}
+			}
+		} else {
+			var threads = new LinkedList<Thread>(); // list of threads
+			while (threadsCount-- > 0) // add appropriate number of threads
+				threads.add(new Thread(() -> { // add a thread with its code
+					Pixel pixel; // current pixel(row,col)
+					// allocate pixel(row,col) in loop until there are no more pixels
+					while ((pixel = pixelManager.nextPixel()) != null)
+						// cast ray through pixel (and color it – inside castRay)
+						castRay(nX, nY, pixel.col(), pixel.row());
+				}));
+			// start all the threads
+			for (var thread : threads)
+				thread.start();
+			// wait until all the threads have finished
+			try {
+				for (var thread : threads)
+					thread.join();
+			} catch (InterruptedException ignore) {
 			}
 		}
 		return this;
 	}
 
 	/**
-	 * Casts a ray through the middle of the pixel and matches the color to the
-	 * intercepted object
+	 * Cast ray from camera and color a pixel
 	 * 
-	 * @param nX     - number of pixels in a row
-	 * @param nY     - number of pixels in a column
-	 * @param column - current pixel's column
-	 * @param row    - current pixel's row
+	 * @param nX  resolution on X axis (number of pixels in row)
+	 * @param nY  resolution on Y axis (number of pixels in column)
+	 * @param col pixel's column number (pixel index in row)
+	 * @param row pixel's row number (pixel index in column)
 	 */
-	private void castRay(int nX, int nY, int column, int row) {
-		this.imageWriter.writePixel(column, row, //
-				this.rayTracer.traceRay(this.constructRay(nX, nY, column, row)));
+	private void castRay(int nX, int nY, int col, int row) {
+		imageWriter.writePixel(col, row, rayTracer.traceRay(constructRay(nX, nY, col, row)));
+		pixelManager.pixelDone();
 	}
 
 	/**

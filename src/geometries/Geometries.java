@@ -2,7 +2,7 @@ package geometries;
 
 import java.util.LinkedList;
 import java.util.List;
-import primitives.Ray;
+import primitives.*;
 
 /**
  * Geometries class which is used for handling multiple geometries in the same
@@ -10,7 +10,7 @@ import primitives.Ray;
  */
 public class Geometries extends Intersectable {
 	private final List<Intersectable> geometries = new LinkedList<Intersectable>();
-
+	
 	/**
 	 * Empty default constructor
 	 */
@@ -32,8 +32,11 @@ public class Geometries extends Intersectable {
 	 * @param geometries - a list of intersectable geometries
 	 */
 	public void add(Intersectable... geometries) {
-		for (Intersectable geom : geometries)
+		for (Intersectable geom : geometries) {
 			this.geometries.add(geom);
+			this.minPoint = this.minPoint.calcMinimumPoint(geom.minPoint);
+			this.maxPoint = this.maxPoint.calcMaximumPoint(geom.maxPoint);
+		}
 	}
 
 	@Override

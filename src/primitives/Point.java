@@ -4,14 +4,13 @@
 package primitives;
 
 /**
- * This class will serve all classes who want to use points 
+ * This class will serve all classes who want to use points
  */
 public class Point {
 	/** zero point */
 	public static final Point ZERO = new Point(0, 0, 0);
 	/** x, y, z coordinates */
 	protected final Double3 coordinates;
-
 
 	/**
 	 * Constructor to initialize Point based object with its three number values
@@ -45,11 +44,12 @@ public class Point {
 	public String toString() {
 		return "Point:" + coordinates;
 	}
-	
+
 	/**
 	 * Subtract between two points resulting in a vector
 	 * 
-	 * @param p2 point two, to find the vector that is the result of the subtraction between 2 points 
+	 * @param p2 point two, to find the vector that is the result of the subtraction
+	 *           between 2 points
 	 * @return the vector from p2 to p1
 	 */
 	public Vector subtract(Point p2) {
@@ -60,14 +60,29 @@ public class Point {
 	 * Add a vector to a point resulting in another point
 	 * 
 	 * @param v vector, which will be added to the point
-	 * @return the point which is the result of the addition of the vector to the point
+	 * @return the point which is the result of the addition of the vector to the
+	 *         point
 	 */
 	public Point add(Vector v) {
 		return new Point(coordinates.add(v.coordinates));
 	}
 
 	/**
-	 * Distance squared between 2 points, basic subtraction between the coordinates of the points squared and summed up together 
+	 * Add x, y, z values to a point resulting in another point
+	 * 
+	 * @param d1 - the x value
+	 * @param d2 - the y value
+	 * @param d3 - the z value
+	 * @return the point which is the result of the addition of the x, y, z values
+	 *         to the point
+	 */
+	public Point add(double d1, double d2, double d3) {
+		return new Point(coordinates.d1 + d1, coordinates.d2 + d2, coordinates.d3 + d3);
+	}
+
+	/**
+	 * Distance squared between 2 points, basic subtraction between the coordinates
+	 * of the points squared and summed up together
 	 * 
 	 * @param p2 point two, to find the distance squared between the two points
 	 * @return the absolute value of the distance squared
@@ -83,9 +98,44 @@ public class Point {
 	 * Distance between 2 points, while using the distanceSquared method
 	 * 
 	 * @param p2 point two, to find the distance between the two points
-	 * @return the distance between the two points (=square root of the distance squared)
+	 * @return the distance between the two points (=square root of the distance
+	 *         squared)
 	 */
 	public double distance(Point p2) {
 		return Math.sqrt(distanceSquared(p2));
+	}
+
+	/**
+	 * finds a point with the smallest x, y, z values between two points
+	 * 
+	 * @param p - the other point to compare with
+	 * @return the point with the smallest x, y, z values
+	 */
+	public Point calcMinimumPoint(Point p) {
+		return p == null ? new Point(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY)
+				: new Point(
+						Util.alignZero(this.coordinates.d1 - p.coordinates.d1) > 0 ? p.coordinates.d1
+								: this.coordinates.d1,
+						Util.alignZero(this.coordinates.d2 - p.coordinates.d2) > 0 ? p.coordinates.d2
+								: this.coordinates.d2,
+						Util.alignZero(this.coordinates.d3 - p.coordinates.d3) > 0 ? p.coordinates.d3
+								: this.coordinates.d3);
+	}
+
+	/**
+	 * finds a point with the biggest x, y, z values between two points
+	 * 
+	 * @param p - the other point to compare with
+	 * @return the point with the biggest x, y, z values
+	 */
+	public Point calcMaximumPoint(Point p) {
+		return p == null ? new Point(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
+				: new Point(
+						Util.alignZero(this.coordinates.d1 - p.coordinates.d1) < 0 ? p.coordinates.d1
+								: this.coordinates.d1,
+						Util.alignZero(this.coordinates.d2 - p.coordinates.d2) < 0 ? p.coordinates.d2
+								: this.coordinates.d2,
+						Util.alignZero(this.coordinates.d3 - p.coordinates.d3) < 0 ? p.coordinates.d3
+								: this.coordinates.d3);
 	}
 }

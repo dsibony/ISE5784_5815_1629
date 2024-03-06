@@ -21,6 +21,10 @@ public class Triangle extends Polygon {
 	 */
 	public Triangle(Point p1, Point p2, Point p3) {
 		super(p1, p2, p3);
+		this.minPoint = p1.calcMinimumPoint(p2);
+		this.maxPoint = p1.calcMaximumPoint(p2);
+		this.minPoint = this.minPoint.calcMinimumPoint(p3);
+		this.maxPoint = this.maxPoint.calcMaximumPoint(p3);
 	}
 
 	@Override
@@ -35,16 +39,19 @@ public class Triangle extends Polygon {
 		Vector v2 = vertices.get(1).subtract(p0);
 		Vector n1 = v1.crossProduct(v2).normalize();
 		double dp1 = alignZero(ray.getDirection().dotProduct(n1));
-		if (dp1 == 0) return null;
+		if (dp1 == 0)
+			return null;
 
 		Vector v3 = vertices.get(2).subtract(p0);
 		Vector n2 = v2.crossProduct(v3).normalize();
 		double dp2 = alignZero(ray.getDirection().dotProduct(n2));
-		if (dp1 * dp2 <= 0) return null;
+		if (dp1 * dp2 <= 0)
+			return null;
 
 		Vector n3 = v3.crossProduct(v1).normalize();
 		double dp3 = alignZero(ray.getDirection().dotProduct(n3));
-		if (dp1 * dp3 <= 0) return null;
+		if (dp1 * dp3 <= 0)
+			return null;
 
 		intersections.get(0).geometry = this;
 		return intersections;

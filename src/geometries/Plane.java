@@ -35,6 +35,9 @@ public class Plane extends Geometry {
 		// Calculate the cross product of v1 and v2 to get the normal vector
 		normal = v1.crossProduct(v2).normalize();
 		q = p3;
+		
+		this.minPoint = null;
+		this.maxPoint = null;
 	}
 
 	/**
