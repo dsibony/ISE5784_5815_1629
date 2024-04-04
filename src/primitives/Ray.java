@@ -133,5 +133,4 @@ public class Ray {
 								/ this.direction.coordinates.d3)))
 				.normalize();
 	}
-
 }

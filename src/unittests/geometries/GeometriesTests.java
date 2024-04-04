@@ -27,9 +27,6 @@ class GeometriesTests {
 		Triangle triangle = new Triangle(p200, p020, pM1M10);
 		Geometries emptyGeo = new Geometries();
 		Geometries geoIntersected = new Geometries(plane, sphere, triangle);
-//		Geometries noGeoIntersected = new Geometries(sphere, plane, triangle);
-//		Geometries oneGeoIntersected = new Geometries(sphere, plane, triangle);
-//		Geometries allGeoIntersected = new Geometries(sphere, plane, triangle);
 
 		// ============ Equivalence Partitions Tests ==============
 		// TC01: Some geometries get intersected by the ray

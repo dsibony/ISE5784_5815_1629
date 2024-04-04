@@ -12,7 +12,7 @@ abstract class Light {
 	/** The intensity of the light */
 	protected final Color intensity;
 
-	/** 
+	/**
 	 * Constructor for initializing the intensity of the light
 	 * 
 	 * @param intensity - the intensity of the light

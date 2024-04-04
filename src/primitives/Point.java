@@ -138,4 +138,42 @@ public class Point {
 						Util.alignZero(this.coordinates.d3 - p.coordinates.d3) < 0 ? p.coordinates.d3
 								: this.coordinates.d3);
 	}
+
+	/**
+	 * Calculating a plane intersection on an axis
+	 * 
+	 * @param ray - the intersecting ray
+	 * @param i   - the index
+	 * @return the value of the intersection point
+	 */
+	public double calcCoordinatesValues(Ray ray, int i) {
+		if (i == 1)
+			return (this.coordinates.d1 - ray.getHead().coordinates.d1) / ray.getDirection().coordinates.d1;
+		if (i == 2)
+			return (this.coordinates.d2 - ray.getHead().coordinates.d2) / ray.getDirection().coordinates.d2;
+		if (i == 3)
+			return (this.coordinates.d3 - ray.getHead().coordinates.d3) / ray.getDirection().coordinates.d3;
+		return 0;
+	}
+
+	/**
+	 * Calculating an addition between 2 points
+	 * 
+	 * @param p - the second point
+	 * @return the addition
+	 */
+	public Point add(Point p) {
+		return new Point(this.coordinates.add(p.coordinates));
+	}
+
+	/**
+	 * Calculating a scale between 2 points
+	 * 
+	 * @param p - the second point
+	 * @return the scaled point
+	 */
+	public Point scale(double d) {
+		return new Point(this.coordinates.scale(d));
+	}
+
 }

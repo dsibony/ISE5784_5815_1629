@@ -36,8 +36,7 @@ public class Plane extends Geometry {
 		normal = v1.crossProduct(v2).normalize();
 		q = p3;
 		
-		this.minPoint = null;
-		this.maxPoint = null;
+		createRegion(null, null);
 	}
 
 	/**

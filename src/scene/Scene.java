@@ -7,8 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import geometries.Geometries;
-import lighting.AmbientLight;
-import lighting.LightSource;
+import lighting.*;
 import primitives.Color;
 
 /**

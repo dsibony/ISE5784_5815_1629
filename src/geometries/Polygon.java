@@ -73,12 +73,11 @@ public class Polygon extends Geometry {
 		// with the normal. If all the rest consequent edges will generate the same sign
 		// - the polygon is convex ("kamur" in Hebrew).
 		boolean positive = edge1.crossProduct(edge2).dotProduct(n) > 0;
-		this.minPoint = vertices[0];
-		this.maxPoint = vertices[0];
+		createRegion(vertices[0], vertices[0]);
 		for (var i = 1; i < vertices.length; ++i) {
 			// calculating the minimum and maximum points of the boundary
-			this.minPoint = this.minPoint.calcMinimumPoint(vertices[i]);
-			this.maxPoint = this.maxPoint.calcMaximumPoint(vertices[i]);
+			updateRegion(vertices[i], vertices[i]);
+			
 
 			// Test that the point is in the same plane as calculated originally
 			if (!isZero(vertices[i].subtract(vertices[0]).dotProduct(n)))
@@ -100,5 +99,4 @@ public class Polygon extends Geometry {
 	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		return null;
 	}
-
 }

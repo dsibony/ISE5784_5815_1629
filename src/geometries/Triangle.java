@@ -21,10 +21,8 @@ public class Triangle extends Polygon {
 	 */
 	public Triangle(Point p1, Point p2, Point p3) {
 		super(p1, p2, p3);
-		this.minPoint = p1.calcMinimumPoint(p2);
-		this.maxPoint = p1.calcMaximumPoint(p2);
-		this.minPoint = this.minPoint.calcMinimumPoint(p3);
-		this.maxPoint = this.maxPoint.calcMaximumPoint(p3);
+		createRegion(p1.calcMinimumPoint(p2), p1.calcMaximumPoint(p2));
+		updateRegion(p3, p3);
 	}
 
 	@Override

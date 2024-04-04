@@ -25,8 +25,7 @@ public class Sphere extends RadialGeometry {
 	public Sphere(Point center, double radius) {
 		super(radius);
 		this.center = center;
-		this.minPoint = center.add(-radius, -radius, -radius);
-		this.maxPoint = center.add(radius, radius, radius);
+		createRegion(center.add(-radius, -radius, -radius), center.add(radius, radius, radius));
 	}
 
 	@Override
